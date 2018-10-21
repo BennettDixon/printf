@@ -15,7 +15,7 @@ typedef struct type_specifier
 } spec_t;
 int _printf(const char *format, ...);
 char *create_buff(unsigned int bytes);
-void copy_buff(char *str, unsigned int *index, char *buff, unsigned int buff_size);
+void copy_buff(char *str, unsigned int *index, char *buff, unsigned int b_s);
 unsigned int print_buff(char *buff, unsigned int buff_size);
 char *(*get_string_func(char ch))(va_list);
 char *get_char(va_list);
@@ -29,5 +29,6 @@ int is_flag(char c);
 int _isalpha(char c);
 int _strlen(char *s);
 char *_strcpy(char *dest, char *src);
-int get_numbase_len(unsigned int n, unsigned int base);
+int get_numbase_len(unsigned int num, unsigned int base);
+void fill_numbase_buff(unsigned int, unsigned int, char *b, unsigned int l);
 #endif /* _PRINTF_H_ */
