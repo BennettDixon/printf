@@ -18,6 +18,9 @@ char *create_buff(unsigned int bytes);
 void copy_buff(char *str, int *index, char *buff, unsigned int buff_size);
 unsigned int print_buff(char *buff, unsigned int buff_size);
 char *(*get_string_func(char ch))(va_list);
+char *get_char(va_list);
+char *get_string(va_list);
+char *get_percent(va_list);
 int is_specifier(char c);
 int is_flag(char c);
 #endif /* _PRINTF_H_ */
