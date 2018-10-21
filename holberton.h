@@ -10,8 +10,8 @@
  */
 typedef struct type_specifier
 {
-	char *(*f)(va_list);
 	char t;
+	char *(*f)(va_list);
 } spec_t;
 int _printf(const char *format, ...);
 char *create_buff(unsigned int bytes);
