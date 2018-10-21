@@ -48,4 +48,4 @@ int _printf(const char *format, ...)
 			buff[buff_i++] = format[ind];
 		ind++;
 	}
-
+}
