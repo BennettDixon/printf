@@ -23,6 +23,7 @@ char *get_string(va_list);
 char *get_percent(va_list);
 char *get_int(va_list);
 char *get_binary(va_list);
+char *get_unsigned(va_list);
 int is_specifier(char c);
 int is_flag(char c);
 int _isalpha(char c);

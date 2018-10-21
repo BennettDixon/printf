@@ -15,6 +15,7 @@ char *(*get_string_func(char ch))(va_list)
 		{ 'd', get_int },
 		{ 'i', get_int },
 		{ 'b', get_binary },
+		{ 'u', get_unsigned },
 		{ NULL, NULL }
 	};
 	int i = 0;
