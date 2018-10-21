@@ -29,4 +29,5 @@ int is_flag(char c);
 int _isalpha(char c);
 int _strlen(char *s);
 char *_strcpy(char *dest, char *src);
+int get_numbase_len(unsigned int n, unsigned int base);
 #endif /* _PRINTF_H_ */
