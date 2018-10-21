@@ -1,4 +1,5 @@
 #include "holberton.h"
+#include <stdlib.h>
 
 /** _printf - Prints variatic arguments based on format string.
   * @format: String passed, may contain zero, or more directives.
