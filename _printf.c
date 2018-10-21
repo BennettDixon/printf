@@ -9,7 +9,7 @@
 int _printf(const char *format, ...)
 {
 	char *buff, *temp, busy;
-	unsigned int ind, buff_i;
+	unsigned int ind, buff_i, length;
 	va_list args;
 
 	if (!format)
@@ -36,6 +36,12 @@ int _printf(const char *format, ...)
 			else if (is_specifier(format[ind]))
 			{
 				temp = get_string_func(format[ind])(args);
+				if (!temp)
+				{
+					free(buff);
+					va_end(args);
+					return (0);
+				}
 				copy_buff(temp, &buff_i, buff, BUFF_SIZE);
 				busy = 0;
 			}
@@ -47,5 +53,8 @@ int _printf(const char *format, ...)
 			buff[buff_i++] = format[ind];
 		ind++;
 	}
-	return (print_buff(buff, buff_i + 1));
+	length = print_buff(buff, buff_i + 1);
+	free(buff);
+	va_end(args);
+	return (length);
 }
