@@ -47,5 +47,5 @@ int _printf(const char *format, ...)
 			buff[buff_i++] = format[ind];
 		ind++;
 	}
-	return (print_buff(&buff, buff_i + 1));
+	return (print_buff(buff, buff_i + 1));
 }
