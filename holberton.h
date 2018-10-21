@@ -30,5 +30,5 @@ int _isalpha(char c);
 int _strlen(char *s);
 char *_strcpy(char *dest, char *src);
 int get_numbase_len(unsigned int num, unsigned int base);
-void fill_numbase_buff(unsigned int, unsigned int, char *b, unsigned int l);
+void fill_numbase_buff(unsigned int, unsigned int, char *b, int size);
 #endif /* _PRINTF_H_ */
