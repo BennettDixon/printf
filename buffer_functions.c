@@ -52,6 +52,6 @@ unsigned int print_buff(char *buff, unsigned int buff_size)
 {
 	unsigned int bytes_written;
 
-	bytes_written = write(1, &buff, buff_size);
+	bytes_written = write(1, buff, buff_size);
 	return (bytes_written);
 }
