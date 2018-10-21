@@ -23,6 +23,7 @@ char *get_string(va_list);
 char *get_percent(va_list);
 int is_specifier(char c);
 int is_flag(char c);
+int _isalpha(char c);
 int _strlen(char *s);
 char *_strcpy(char *dest, char *src);
 #endif /* _PRINTF_H_ */
