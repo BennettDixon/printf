@@ -38,7 +38,7 @@ char *get_int(va_list args)
 			ret[i] = '-';	
 			break;
 		}
-		ret[i] = temp % 10;
+		ret[i] = temp % 10 + '0';
 		temp /= 10;
 		i--;
 	}
