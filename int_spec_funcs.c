@@ -5,7 +5,7 @@ unsigned int _abs(int);
  * get_int - gets a character pointer to new string containing int
  * @args: va_list to get integer from and create str
  *
- * Return: character pointer to newly created string
+ * Return: character pointer to newly created string. NULL if malloc fails.
  */
 char *get_int(va_list args)
 {
@@ -42,6 +42,51 @@ char *get_int(va_list args)
 		temp /= 10;
 		i--;
 	}
+	return (ret);
+}
+
+/**
+ * get_binary - convert unsigned integer to binary representation.
+ * @args: va_list containing the unsigned integer.
+ *
+ * Return: char pointer to the binary string. NULL if malloc fails.
+ */
+
+char *get_binary(va_list args)
+{
+	unsigned int num, bit;
+	int length, i;
+	char *ret;
+
+	bit = 1;
+	length = 1;
+	num = va_arg(args, unsigned int);
+
+	while (num > bit * 2)
+	{
+		bit *= 2;
+		length++;
+	}
+
+	ret = malloc(length + 1);
+	if (!ret)
+		return (NULL);
+
+	for (i = 0; i < length; i++)
+	{
+		if (bit <= num)
+		{
+			ret[i] = '1';
+			num -= bit;
+		}
+		else
+		{
+			ret[i] = '0';
+		}
+		bit /= 2;
+	}
+	ret[length] = '\0';
+
 	return (ret);
 }
 /**
