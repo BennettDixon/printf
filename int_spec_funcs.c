@@ -9,7 +9,7 @@ unsigned int _abs(int);
  */
 char *get_int(va_list args)
 {
-	int num, i, length;
+	int num, length;
 	unsigned int temp;
 	char *ret;
 
@@ -23,20 +23,11 @@ char *get_int(va_list args)
 	if (!ret)
 		return (NULL);
 
-	ret[length] = '\0';
-	i = length - 1;
 	temp = _abs(num);
-	while (i >= 0) /* put integer in new string */
-	{
-		if (num < 0 && i == 0)
-		{
-			ret[i] = '-';
-			break;
-		}
-		ret[i] = temp % 10 + '0';
-		temp /= 10;
-		i--;
-	}
+	fill_numbase_buff(temp, 10, ret, length);
+	if (num < 0)
+		ret[0] = '-';
+
 	return (ret);
 }
 
@@ -49,38 +40,18 @@ char *get_int(va_list args)
 
 char *get_binary(va_list args)
 {
-	unsigned int num, bit;
-	int length, i;
+	unsigned int num;
+	int length;
 	char *ret;
 
-	bit = 1;
-	length = 1;
 	num = va_arg(args, unsigned int);
-
-	while (num > bit * 2)
-	{
-		bit *= 2;
-		length++;
-	}
+	length = get_numbase_len(num, 2);
 
 	ret = malloc(length + 1);
 	if (!ret)
 		return (NULL);
 
-	for (i = 0; i < length; i++)
-	{
-		if (bit <= num)
-		{
-			ret[i] = '1';
-			num -= bit;
-		}
-		else
-		{
-			ret[i] = '0';
-		}
-		bit /= 2;
-	}
-	ret[length] = '\0';
+	fill_numbase_buff(num, 2, ret, length);
 
 	return (ret);
 }
@@ -93,7 +64,7 @@ char *get_binary(va_list args)
 char *get_unsigned(va_list args)
 {
 	unsigned int num, temp;
-	int i, length;
+	int length;
 	char *ret;
 
 	num = va_arg(args, unsigned int);
@@ -104,15 +75,9 @@ char *get_unsigned(va_list args)
 	if (!ret)
 		return (NULL);
 
-	ret[length] = '\0';
-	i = length - 1;
 	temp = num;
-	while (i >= 0) /* put integer in new string */
-	{
-		ret[i] = temp % 10 + '0';
-		temp /= 10;
-		i--;
-	}
+	fill_numbase_buff(temp, 10, ret, length);
+
 	return (ret);
 }
 /**
