@@ -1,5 +1,7 @@
 #define NULL 0
 
+int ch_in_array(char c, char *ptr);
+
 /**
   * is_specifier - Checks if the character is a format specifier.
   * @c: The character passed.
