@@ -29,13 +29,13 @@ char *get_int(va_list args)
 		return (NULL);
 
 	ret[length] = '\0';
-	i = length;
+	i = length - 1;
 	temp = _abs(num);
 	while (i >= 0) /* put integer in new string */
 	{
 		if (num < 0 && i == 0)
 		{
-			ret[i] = '-';	
+			ret[i] = '-';
 			break;
 		}
 		ret[i] = temp % 10 + '0';
