@@ -8,7 +8,7 @@
  */
 char *get_char(va_list args)
 {
-	char str*;
+	char *str;
 
 	str = malloc(2);
 	if (!str)
@@ -32,7 +32,7 @@ char *get_string(va_list args)
 	ret = malloc(_strlen(str) + 1);
 	if (!ret)
 		return (NULL);
-	ret = _strcpy(ret, src);
+	ret = _strcpy(ret, str);
 	return (ret);
 }
 /**
