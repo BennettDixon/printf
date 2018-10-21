@@ -25,7 +25,7 @@ int is_specifier(char c)
 
 int is_flag(char c)
 {
-	void(c);
+	c = 'a';
 	return (0);
 }
 
