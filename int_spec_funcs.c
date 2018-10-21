@@ -13,16 +13,11 @@ char *get_int(va_list args)
 	unsigned int temp;
 	char *ret;
 
-	length = 1; /* numbers always contain 1 digit */
 	num = va_arg(args, int);
+	temp = _abs(num);
+	length = get_numbase_len(temp, 10);
 	if (num < 0)
 		length++; /* negative sign */
-	temp = _abs(num);
-	while (temp > 9) /* get length of integer */
-	{
-		length++;
-		temp /= 10;
-	}
 
 	ret = malloc(length + 1); /* create new string */
 	if (!ret)
@@ -101,15 +96,9 @@ char *get_unsigned(va_list args)
 	int i, length;
 	char *ret;
 
-	length = 1; /* numbers always contain 1 digit */
 	num = va_arg(args, unsigned int);
 	temp = num;
-
-	while (temp > 9) /* get length of integer */
-	{
-		length++;
-		temp /= 10;
-	}
+	length = get_numbase_len(num, 10);
 
 	ret = malloc(length + 1); /* create new string */
 	if (!ret)
