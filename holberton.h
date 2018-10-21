@@ -2,7 +2,7 @@
 #define _PRINTF_H_
 #include <stdarg.h>
 
-#define BUFF_SIZE 1024;
+#define BUFF_SIZE 1024
 /**
  * struct type_specifier - contains a type represented as char
  * @f: print_fucntion for specific type
