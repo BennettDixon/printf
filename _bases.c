@@ -7,7 +7,7 @@
  */
 int get_numbase_len(unsigned int num, unsigned int base)
 {
-	int len = 0;
+	int len = 1; /* all numbers contain atleast one digit */
 
 	while (num > base - 1)
 	{
