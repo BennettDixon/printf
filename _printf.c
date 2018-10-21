@@ -15,7 +15,7 @@ int _printf(const char *format, ...)
 	va_list args;
 
 	if (!format)
-		return (0);
+		return (-1);
 
 	buff = create_buff(BUFF_SIZE);
 	va_start(args, format);
