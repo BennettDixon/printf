@@ -9,7 +9,7 @@ char *get_char(va_list args)
 {
 	char str[] = { 't', '\0' };
 
-	str[0] = va_arg(args, char);
+	str[0] = va_arg(args, int);
 	return (str);
 }
 /**
@@ -30,6 +30,6 @@ char *get_string(va_list args)
  */
 char *get_percent(va_list args)
 {
-	void(args);
+	if (args);
 	return ("%");
 }
