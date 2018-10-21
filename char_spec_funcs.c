@@ -30,6 +30,6 @@ char *get_string(va_list args)
  */
 char *get_percent(va_list args)
 {
-	if (args);
+	if (args) {};
 	return ("%");
 }
