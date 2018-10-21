@@ -80,6 +80,32 @@ char *get_unsigned(va_list args)
 
 	return (ret);
 }
+
+/**
+ * get_octal - gets a string representing an unsigned octal.
+ * @args: va_list to get unsigned octal from.
+ *
+ * Return: char pointer to new memory location of string. NULL if malloc fails.
+ */
+
+char *get_octal(va_list args)
+{
+	unsigned int num;
+	int length;
+	char *ret;
+
+	num = va_arg(args, unsigned int);
+	length = get_numbase_len(num, 8);
+
+	ret = malloc(length + 1);
+	if (!ret)
+		return (NULL);
+
+	fill_numbase_buff(num, 8, ret, length);
+
+	return (ret);
+}
+
 /**
  * _abs - gets absolute value of integer
  * @n: integer to get absolute value for
