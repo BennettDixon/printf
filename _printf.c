@@ -8,10 +8,9 @@
 
 int _printf(const char *format, ...)
 {
-	char *beg, *end, *temp, busy;
+	char *buff, *temp, busy;
 	int ind, buff_i;
 	va_list args;
-	char *buff;
 
 	if (!format)
 		return (0);
