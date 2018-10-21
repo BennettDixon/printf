@@ -30,14 +30,14 @@ char *create_buff(unsigned int bytes)
  */
 void copy_buff(char *str, int *index, char *buff, unsigned int buff_size)
 {
-	int i = 0;
+	unsigned int i = 0;
 
 	if (!str || !buff)
 		return;
 	while (str[i] && *index < buff_size)
 	{
 		buff[*index] = str[i];
-		*index++, i++;
+		(*index)++, i++;
 	}
 }
 /**
