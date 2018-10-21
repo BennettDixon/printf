@@ -28,7 +28,7 @@ char *create_buff(unsigned int bytes)
  *
  * Return: always void
  */
-void copy_buff(char *str, int *index, char *buff, unsigned int buff_size)
+void copy_buff(char *str, unsigned int *index, char *buff, unsigned int buff_size)
 {
 	unsigned int i = 0;
 

@@ -9,7 +9,7 @@
 int _printf(const char *format, ...)
 {
 	char *buff, *temp, busy;
-	int ind, buff_i;
+	unsigned int ind, buff_i;
 	va_list args;
 
 	if (!format)

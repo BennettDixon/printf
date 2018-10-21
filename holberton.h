@@ -15,7 +15,7 @@ typedef struct type_specifier
 } spec_t;
 int _printf(const char *format, ...);
 char *create_buff(unsigned int bytes);
-void copy_buff(char *str, int *index, char *buff, unsigned int buff_size);
+void copy_buff(char *str, unsigned int *index, char *buff, unsigned int buff_size);
 unsigned int print_buff(char *buff, unsigned int buff_size);
 char *(*get_string_func(char ch))(va_list);
 char *get_char(va_list);
