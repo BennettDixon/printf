@@ -12,6 +12,8 @@ char *(*get_string_func(char ch))(va_list)
 		{ 'c', get_char },
 		{ 's', get_string },
 		{ '%', get_percent },
+		{ 'd', get_int },
+		{ 'i', get_int },
 		{ NULL, NULL }
 	};
 	int i = 0;
