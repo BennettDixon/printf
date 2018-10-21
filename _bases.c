@@ -30,6 +30,7 @@ void fill_numbase_buff(unsigned int num, unsigned int base,
 {
 	unsigned int i = buff_size - 1;
 
+	buff[buff_size] = '\0';
 	while (i >= 0)
 	{
 		buff[i] = num % base + '0';
