@@ -26,6 +26,8 @@ int is_specifier(char c)
 int is_flag(char c)
 {
 	c = 'a';
+	if (c)
+		c = 'b';
 	return (0);
 }
 
