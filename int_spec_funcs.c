@@ -97,12 +97,14 @@ char *get_binary(va_list args)
  */
 char *get_unsigned(va_list args)
 {
-	unsigned int num;
+	unsigned int num, temp;
 	int i, length;
 	char *ret;
 
 	length = 1; /* numbers always contain 1 digit */
 	num = va_arg(args, unsigned int);
+	temp = num;
+
 	while (temp > 9) /* get length of integer */
 	{
 		length++;
@@ -115,7 +117,7 @@ char *get_unsigned(va_list args)
 
 	ret[length] = '\0';
 	i = length - 1;
-	temp = _abs(num);
+	temp = num;
 	while (i >= 0) /* put integer in new string */
 	{
 		ret[i] = temp % 10 + '0';
