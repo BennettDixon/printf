@@ -1,5 +1,6 @@
 #include "holberton.h"
 #include <unistd.h>
+#include <stdlib.h>
 /**
  * create_buff - creates a buffer in memory and sets to 0
  * @bytes: number of bytes to allocate for buffer
