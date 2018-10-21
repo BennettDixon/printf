@@ -39,6 +39,7 @@ void copy_buff(char *str, unsigned int *index, char *buff, unsigned int buff_siz
 		buff[*index] = str[i];
 		(*index)++, i++;
 	}
+	free(str);
 }
 /**
  * print_buff - prints the contents of the buffer
