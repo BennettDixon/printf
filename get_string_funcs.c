@@ -18,5 +18,5 @@ char *(*get_string_func(char ch))(va_list)
 
 	while(specs[i].t != ch)
 		i++;
-	return (specs[i].f)
+	return (specs[i].f);
 }
