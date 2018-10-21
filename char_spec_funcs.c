@@ -1,4 +1,5 @@
 #include "holberton.h"
+#include <stdlib.h>
 /**
  * get_char - gets a pointer to an array containing char and null byte
  * @args: va_list to get argument from of type char
@@ -7,9 +8,13 @@
  */
 char *get_char(va_list args)
 {
-	char str[] = { 't', '\0' };
+	char str*;
 
+	str = malloc(2);
+	if (!str)
+		return (NULL);
 	str[0] = va_arg(args, int);
+	str[1] = '\0';
 	return (str);
 }
 /**
@@ -20,7 +25,15 @@ char *get_char(va_list args)
  */
 char *get_string(va_list args)
 {
-	return (va_arg(args, char *));
+	char *str;
+	char *ret;
+
+	str = va_arg(args, char *);
+	ret = malloc(_strlen(str) + 1);
+	if (!ret)
+		return (NULL);
+	ret = _strcpy(ret, src);
+	return (ret);
 }
 /**
  * get_percent - gets a pointer to a string literal containing "%\0"
@@ -30,6 +43,14 @@ char *get_string(va_list args)
  */
 char *get_percent(va_list args)
 {
+	char *str;
+
 	if (args) {};
-	return ("%");
+
+	str = malloc(2);
+	if (!str)
+		return (NULL);
+	str[0] = '%';
+	str[1] = '\0';
+	return (str);
 }
