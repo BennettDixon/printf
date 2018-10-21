@@ -9,10 +9,11 @@ unsigned int _abs(int);
  */
 char *get_int(va_list args)
 {
-	int num;
-	unsigned int temp, i, length = 1;
+	int num, i, length;
+	unsigned int temp;
 	char *ret;
 
+	length = 1; /* numbers always contain 1 digit */
 	num = va_arg(args, int);
 	if (num < 0)
 		length++; /* negative sign */
@@ -32,7 +33,7 @@ char *get_int(va_list args)
 	temp = _abs(num);
 	while (i >= 0) /* put integer in new string */
 	{
-		if (n < 0 && i = 0)
+		if (num < 0 && i == 0)
 		{
 			ret[i] = '-';	
 			break;
