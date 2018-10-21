@@ -44,6 +44,7 @@ int _printf(const char *format, ...)
 					va_end(args);
 					return (0);
 				}
+				printf("temp: %s\n", temp);
 				copy_buff(temp, &buff_i, buff, BUFF_SIZE);
 				busy = 0;
 			}
@@ -55,7 +56,7 @@ int _printf(const char *format, ...)
 			buff[buff_i++] = format[ind];
 		ind++;
 	}
-	length = print_buff(buff, buff_i + 1);
+	length = print_buff(buff, buff_i);
 	free(buff);
 	va_end(args);
 	return (length);
