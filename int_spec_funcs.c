@@ -63,20 +63,18 @@ char *get_binary(va_list args)
  */
 char *get_unsigned(va_list args)
 {
-	unsigned int num, temp;
+	unsigned int num;
 	int length;
 	char *ret;
 
 	num = va_arg(args, unsigned int);
-	temp = num;
 	length = get_numbase_len(num, 10);
 
 	ret = malloc(length + 1); /* create new string */
 	if (!ret)
 		return (NULL);
 
-	temp = num;
-	fill_numbase_buff(temp, 10, ret, length);
+	fill_numbase_buff(num, 10, ret, length);
 
 	return (ret);
 }
