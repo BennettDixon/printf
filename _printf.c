@@ -11,7 +11,7 @@
 int _printf(const char *format, ...)
 {
 	char *buff, *temp, busy;
-	unsigned int ind, buff_i, length;
+	unsigned int ind, beg_ind, buff_i, length;
 	va_list args;
 
 	if (!format)
@@ -27,27 +27,39 @@ int _printf(const char *format, ...)
 	{
 		if (format[ind] == '%' && !busy)
 		{
+			beg_ind = ind;
 			busy = 1;
 		}
 		else if (busy)
 		{
+			if (_isalpha(format[ind]) || format[ind] == '%')
+			{
+				if (is_specifier(format[ind]))
+				{
+					temp = get_string_func(format[ind])(args);
+					if (!temp)
+					{
+						free(buff);
+						va_end(args);
+						return (0);
+					}
+					/* check if flag function null*/
+					/* check if precision function null */
+					copy_buff(temp, &buff_i, buff, BUFF_SIZE);
+					busy = 0;
+				}
+				else
+				{
+					ind = beg_ind;
+					buff[buff_i++] = format[ind];
+					busy = 0;
+				}
+			}
 			if (is_flag(format[ind]))
 			{
 				/* flags */
 			}
-			else if (is_specifier(format[ind]))
-			{
-				temp = get_string_func(format[ind])(args);
-				if (!temp)
-				{
-					free(buff);
-					va_end(args);
-					return (0);
-				}
-				printf("temp: %s\n", temp);
-				copy_buff(temp, &buff_i, buff, BUFF_SIZE);
-				busy = 0;
-			}
+
 			else /* percision */
 			{
 			}
