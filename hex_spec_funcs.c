@@ -68,6 +68,7 @@ char *get_pointer(va_list args)
 	int length, i;
 	unsigned long int addr, temp, rem;
 	char *ret;
+
 	addr = va_arg(args, unsigned long int);
 	length = 1;
 	temp = addr;

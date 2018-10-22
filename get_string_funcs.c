@@ -24,7 +24,7 @@ char *(*get_string_func(char ch))(va_list)
 	};
 	int i = 0;
 
-	while(specs[i].t != ch)
+	while (specs[i].t != ch)
 		i++;
 	return (specs[i].f);
 }

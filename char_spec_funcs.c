@@ -46,7 +46,9 @@ char *get_percent(va_list args)
 {
 	char *str;
 
-	if (args) {};
+	if (args)
+	{
+	}
 
 	str = malloc(2);
 	if (!str)
