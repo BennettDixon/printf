@@ -1,6 +1,5 @@
 #include "holberton.h"
 #include <stdlib.h>
-#include <stdio.h>
 
 void print_helper(const char *format, unsigned int *, char *, unsigned int *,
 		char *, unsigned int *, va_list);
@@ -53,11 +52,9 @@ void print_helper(const char *format, unsigned int *f_index, char *buff,
 		va_list args)
 {
 	char *temp;
-	/*printf("beg:%c\n", format[*beg_index]);*/
 	if (_isalpha(format[*f_index]) || format[*f_index] == '%'
 		|| format[(*f_index) + 1] == '\0')
 	{
-		printf("in isalpha block\n");
 		if (is_specifier(format[*f_index]))
 		{
 			temp = get_string_func(format[*f_index])(args);
@@ -73,7 +70,6 @@ void print_helper(const char *format, unsigned int *f_index, char *buff,
 		else
 		{
 			*f_index = *beg_index;
-			printf("format[%d]: %c\n", *f_index, format[*f_index]);
 			buff[(*b_index)++] = format[*f_index];
 			*busy = 0;
 		}
