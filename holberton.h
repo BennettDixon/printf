@@ -37,6 +37,7 @@ int is_printable(char c);
 int _strlen(char *s);
 void _string_upper(char *str);
 char *_strcpy(char *dest, char *src);
+int fill_nonprint_buffer(int length, char *buff, char *str);
 int get_numbase_len(unsigned int num, unsigned int base);
 void fill_numbase_buff(unsigned int, unsigned int, char *b, int size);
 #endif /* _PRINTF_H_ */
