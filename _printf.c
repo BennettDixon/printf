@@ -2,7 +2,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-/** _printf - Prints variatic arguments based on format string.
+void print_helper(const char *format, unsigned int *, char *, unsigned int *,
+		char *, unsigned int *, va_list);
+/**
+  * _printf - Prints variatic arguments based on format string.
   * @format: String passed, may contain zero, or more directives.
   *
   * Return: Number of characters printed to stdout.
@@ -10,7 +13,7 @@
 
 int _printf(const char *format, ...)
 {
-	char *buff, *temp, busy;
+	char *buff, busy;
 	unsigned int ind, beg_ind, buff_i, length;
 	va_list args;
 
@@ -19,6 +22,7 @@ int _printf(const char *format, ...)
 
 	buff = create_buff(BUFF_SIZE);
 	va_start(args, format);
+	length = 0;
 	ind = 0;
 	buff_i = 0;
 	busy = 0;
@@ -44,13 +48,15 @@ int _printf(const char *format, ...)
 	va_end(args);
 	return (length);
 }
-void print_helper(char *format, int *f_index, char *buff, int *b_index,
-		int *busy, int *beg_index, va_list args)
+void print_helper(const char *format, unsigned int *f_index, char *buff,
+		unsigned int *b_index, char *busy, unsigned int *beg_index,
+		va_list args)
 {
 	char *temp;
-
-	if (_isalpha(format[*f_index]) || format[*f_index] == '%')
+	/*printf("beg:%c\n", format[*beg_index]);*/
+	if (_isalpha(format[*f_index]) || format[*f_index] == '%' || format[(*f_index) + 1] == '\0')
 	{
+		printf("in isalpha block\n");
 		if (is_specifier(format[*f_index]))
 		{
 			temp = get_string_func(format[*f_index])(args);
@@ -66,7 +72,8 @@ void print_helper(char *format, int *f_index, char *buff, int *b_index,
 		else
 		{
 			*f_index = *beg_index;
-			buff[*b_index++] = format[*f_index];
+			printf("format[%d]: %c\n", *f_index, format[*f_index]);
+			buff[(*b_index)++] = format[*f_index];
 			*busy = 0;
 		}
 	}
