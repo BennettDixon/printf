@@ -25,6 +25,8 @@ char *get_int(va_list);
 char *get_binary(va_list);
 char *get_unsigned(va_list);
 char *get_octal(va_list);
+char *get_hex(va_list);
+char *get_hex_upper(va_list);
 int is_specifier(char c);
 int is_flag(char c);
 int _isalpha(char c);

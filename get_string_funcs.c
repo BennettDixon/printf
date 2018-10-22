@@ -17,6 +17,8 @@ char *(*get_string_func(char ch))(va_list)
 		{ 'b', get_binary },
 		{ 'u', get_unsigned },
 		{ 'o', get_octal },
+		{ 'x', get_hex },
+		{ 'X', get_hex_upper },
 		{ NULL, NULL }
 	};
 	int i = 0;
