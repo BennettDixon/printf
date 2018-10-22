@@ -32,37 +32,8 @@ int _printf(const char *format, ...)
 		}
 		else if (busy)
 		{
-			if (_isalpha(format[ind]) || format[ind] == '%')
-			{
-				if (is_specifier(format[ind]))
-				{
-					temp = get_string_func(format[ind])(args);
-					if (!temp)
-					{
-						free(buff);
-						va_end(args);
-						return (0);
-					}
-					/* check if flag function null*/
-					/* check if precision function null */
-					copy_buff(temp, &buff_i, buff, BUFF_SIZE);
-					busy = 0;
-				}
-				else
-				{
-					ind = beg_ind;
-					buff[buff_i++] = format[ind];
-					busy = 0;
-				}
-			}
-			if (is_flag(format[ind]))
-			{
-				/* flags */
-			}
-
-			else /* percision */
-			{
-			}
+			print_helper(format, &ind, buff, &buff_i, &busy,
+					&beg_ind, args);
 		}
 		else
 			buff[buff_i++] = format[ind];
@@ -72,4 +43,39 @@ int _printf(const char *format, ...)
 	free(buff);
 	va_end(args);
 	return (length);
+}
+void print_helper(char *format, int *f_index, char *buff, int *b_index,
+		int *busy, int *beg_index, va_list args)
+{
+	char *temp;
+
+	if (_isalpha(format[*f_index]) || format[*f_index] == '%')
+	{
+		if (is_specifier(format[*f_index]))
+		{
+			temp = get_string_func(format[*f_index])(args);
+			if (!temp)
+			{
+				free(buff);
+				va_end(args);
+				return;
+			}
+			copy_buff(temp, b_index, buff, BUFF_SIZE);
+			*busy = 0;
+		}
+		else
+		{
+			*f_index = *beg_index;
+			buff[*b_index++] = format[*f_index];
+			*busy = 0;
+		}
+	}
+	if (is_flag(format[*f_index]))
+	{
+		/* flags */
+	}
+	else
+	{
+		/* percision */
+	}
 }
