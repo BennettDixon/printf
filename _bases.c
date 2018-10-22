@@ -3,7 +3,7 @@
  * @num: number to get length needed for
  * @base: base of number representation used by buffer
  *
- * Return: integer containing length of buffer needed
+ * Return: integer containing length of buffer needed (doesn't contain null bt)
  */
 int get_numbase_len(unsigned int num, unsigned int base)
 {
@@ -17,12 +17,12 @@ int get_numbase_len(unsigned int num, unsigned int base)
 	return (len);
 }
 /**
- * fill_numbase_buff - fills buffer with correct numbers up to base 10
+ * fill_numbase_buff - fills buffer with correct numbers up to base 36
  * @num: number to convert to string given base
- * @base: base of number used in conversion, only works up to base 10
+ * @base: base of number used in conversion, only works up to base 36
  * @buff: buffer to fill with result of conversion
  * @buff_size: size of buffer in bytes
- *
+ * 
  * Return: always void.
  */
 void fill_numbase_buff(unsigned int num, unsigned int base,
