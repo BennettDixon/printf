@@ -54,7 +54,8 @@ void print_helper(const char *format, unsigned int *f_index, char *buff,
 {
 	char *temp;
 	/*printf("beg:%c\n", format[*beg_index]);*/
-	if (_isalpha(format[*f_index]) || format[*f_index] == '%' || format[(*f_index) + 1] == '\0')
+	if (_isalpha(format[*f_index]) || format[*f_index] == '%'
+		|| format[(*f_index) + 1] == '\0')
 	{
 		printf("in isalpha block\n");
 		if (is_specifier(format[*f_index]))
