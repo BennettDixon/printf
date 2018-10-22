@@ -11,6 +11,7 @@ char *(*get_string_func(char ch))(va_list)
 	spec_t specs[] = {
 		{ 'c', get_char },
 		{ 's', get_string },
+		{ 'S', get_nonprint_string },
 		{ '%', get_percent },
 		{ 'd', get_int },
 		{ 'i', get_int },

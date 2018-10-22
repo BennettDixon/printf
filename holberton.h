@@ -20,6 +20,7 @@ unsigned int print_buff(char *buff, unsigned int buff_size);
 char *(*get_string_func(char ch))(va_list);
 char *get_char(va_list);
 char *get_string(va_list);
+char *get_nonprint_string(va_list);
 char *get_percent(va_list);
 char *get_int(va_list);
 char *get_binary(va_list);

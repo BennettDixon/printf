@@ -1,6 +1,6 @@
 #include "holberton.h"
 #include <stdlib.h>
-
+#include <stdio.h>
 /**
  * get_char - gets a pointer to an array containing char and null byte
  * @args: va_list to get argument from of type char
@@ -60,37 +60,55 @@ char *get_percent(va_list args)
 char *get_nonprint_string(va_list args)
 {
 	char *str, *ret, *hex_val;
-	int length, i;
+	int length, i, j;
 
 	str = va_arg(args, char *);
-	while (str[length])
+	length = 0;
+	i = 0;
+
+	while (str[i])
 	{
-		if (!is_printable(str[length]) && str[length] > 0)
+		if (!is_printable(str[i]))
 		{
 			length += 4;
 		}
 		else
 			length++;
+		i++;
+
 	}
+	i = 0;
+	j = 0;
 	ret = malloc(length + 1);
+	if (!ret)
+		return (NULL);
 	while (i < length)
 	{
-		if (!is_printable(str[i]) && str[length] > 0)
+		if (!is_printable(str[j]) && str[j] > 0)
 		{
-			hex_val = get_hex_n((unsigned int)str[i]);
+			hex_val = get_hex_n((unsigned int)str[j]);
 			if (!hex_val)
 				return (NULL);
 			ret[i++] = '\\';
 			ret[i++] = 'x';
-			ret[i++] = hex_val[0];
-			ret[i++] = hex_val[1];
+			if (hex_val[1])
+			{
+				ret[i++] = hex_val[0];
+				ret[i++] = hex_val[1];
+			}
+			else
+			{
+				ret[i++] = '0';
+				ret[i++] = hex_val[0];
+			}
 			free(hex_val);
 		}
 		else
 		{
-			ret[i] = str[i];
+			ret[i] = str[j];
 			i++;
 		}
+		j++;
 	}
 	ret[length] = '\0';
 	return (ret);
