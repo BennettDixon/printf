@@ -32,6 +32,7 @@ char *get_pointer(va_list);
 int is_specifier(char c);
 int is_flag(char c);
 int _isalpha(char c);
+int is_printable(char c);
 int _strlen(char *s);
 void _string_upper(char *str);
 char *_strcpy(char *dest, char *src);
