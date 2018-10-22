@@ -64,6 +64,12 @@ char *get_pointer(va_list args)
 	addr = va_arg(args, unsigned long int);
 	length = 1;
 	temp = addr;
+	if (addr == 0)
+	{
+		ret = malloc(5 + 1);
+		ret = _strcpy(ret, "(nil)");
+		return (ret);
+	}
 	while (temp > 15)
 	{
 		temp /= 16;
