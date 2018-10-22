@@ -79,13 +79,10 @@ char *get_pointer(va_list args)
 	ret = malloc(2 + length + 1);
 	if (!ret)
 		return (NULL);
-
 	ret[0] = '0';
 	ret[1] = 'x';
 	ret[2 + length] = '\0';
-
 	i = 2 + length - 1;
-
 	while (i > 1)
 	{
 		rem = addr % 16;
@@ -96,6 +93,5 @@ char *get_pointer(va_list args)
 		addr /= 16;
 		i--;
 	}
-
 	return (ret);
 }
