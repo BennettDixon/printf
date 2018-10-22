@@ -52,6 +52,7 @@ void print_helper(const char *format, unsigned int *f_index, char *buff,
 		va_list args)
 {
 	char *temp;
+
 	if (_isalpha(format[*f_index]) || format[*f_index] == '%'
 		|| format[(*f_index) + 1] == '\0')
 	{
