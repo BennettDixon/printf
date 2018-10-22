@@ -1,4 +1,5 @@
 #include "holberton.h"
+#include <stdlib.h>
 /**
  * get_hex - gets a string that is the hex representation of an integer
  * @args: va_list to get integer for conversion from
