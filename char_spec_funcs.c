@@ -57,6 +57,12 @@ char *get_percent(va_list args)
 	str[1] = '\0';
 	return (str);
 }
+/**
+ * get_nonprint_string - gets a pointer to a string in memory containing np's
+ * @args: va_list to get string containing non printables
+ *
+ * Return: pointer to newly allocated string containing hex's for np's
+ */
 char *get_nonprint_string(va_list args)
 {
 	char *str, *ret;
