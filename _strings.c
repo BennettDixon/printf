@@ -35,10 +35,10 @@ char *_strcpy(char *dest, char *src)
 	return (dest);
 }
 /**
- * _toupper - Converts lowercase characters to uppercase.
- * @c: A character.
+ * _string_upper - Converts lowercase characters in a string to uppercase.
+ * @str: char pointer to the string.
  *
- * Return: ASCII value of the uppercase.
+ * Return: Void.
  */
 void _string_upper(char *str)
 {
