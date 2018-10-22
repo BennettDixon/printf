@@ -57,3 +57,41 @@ char *get_percent(va_list args)
 	str[1] = '\0';
 	return (str);
 }
+char *get_nonprint_string(va_list args)
+{
+	char *str, *ret, *hex_val;
+	int length, i;
+
+	str = va_arg(args, char *);
+	while (str[length])
+	{
+		if (!is_printable(str[length]) && str[length] > 0)
+		{
+			length += 4;
+		}
+		else
+			length++;
+	}
+	ret = malloc(length + 1);
+	while (i < length)
+	{
+		if (!is_printable(str[i]) && str[length] > 0)
+		{
+			hex_val = get_hex_n((unsigned int)str[i]);
+			if (!hex_val)
+				return (NULL);
+			ret[i++] = '\\';
+			ret[i++] = 'x';
+			ret[i++] = hex_val[0];
+			ret[i++] = hex_val[1];
+			free(hex_val);
+		}
+		else
+		{
+			ret[i] = str[i];
+			i++;
+		}
+	}
+	ret[length] = '\0';
+	return (ret);
+}
