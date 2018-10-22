@@ -16,10 +16,10 @@ int _printf(const char *format, ...)
 	unsigned int ind, beg_ind, buff_i, length;
 	va_list args;
 
-	if (!format)
-		return (-1);
 
 	buff = create_buff(BUFF_SIZE);
+	if (!format || !buff)
+		return (-1);
 	va_start(args, format);
 	length = 0;
 	ind = 0;
