@@ -1,4 +1,6 @@
+#include <stdlib.h>
 #include "holberton.h"
+
 /**
  * _strlen - gets length of string, not including null byte
  * @str: string to get length of
@@ -73,6 +75,7 @@ int fill_nonprint_buffer(int length, char *buff, char *str)
 				return (0);
 			buff[i++] = '\\';
 			buff[i++] = 'x';
+			_string_upper(hex_val);
 			if (hex_val[1])
 			{
 				buff[i++] = hex_val[0];

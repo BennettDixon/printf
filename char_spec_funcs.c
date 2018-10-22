@@ -59,8 +59,8 @@ char *get_percent(va_list args)
 }
 char *get_nonprint_string(va_list args)
 {
-	char *str, *ret, *hex_val;
-	int length, i, j;
+	char *str, *ret;
+	int length, i;
 
 	str = va_arg(args, char *);
 	length = 0;
@@ -78,38 +78,14 @@ char *get_nonprint_string(va_list args)
 
 	}
 	i = 0;
-	j = 0;
 	ret = malloc(length + 1);
 	if (!ret)
 		return (NULL);
-	while (i < length)
+	if (!fill_nonprint_buffer(length, ret, str))
 	{
-		if (!is_printable(str[j]) && str[j] > 0)
-		{
-			hex_val = get_hex_n((unsigned int)str[j]);
-			if (!hex_val)
-				return (NULL);
-			ret[i++] = '\\';
-			ret[i++] = 'x';
-			if (hex_val[1])
-			{
-				ret[i++] = hex_val[0];
-				ret[i++] = hex_val[1];
-			}
-			else
-			{
-				ret[i++] = '0';
-				ret[i++] = hex_val[0];
-			}
-			free(hex_val);
-		}
-		else
-		{
-			ret[i] = str[j];
-			i++;
-		}
-		j++;
+		free(ret);
+		return (NULL);
 	}
-	ret[length] = '\0';
+
 	return (ret);
 }
