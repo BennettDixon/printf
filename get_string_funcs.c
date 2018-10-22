@@ -19,6 +19,7 @@ char *(*get_string_func(char ch))(va_list)
 		{ 'o', get_octal },
 		{ 'x', get_hex },
 		{ 'X', get_hex_upper },
+		{ 'p', get_pointer },
 		{ NULL, NULL }
 	};
 	int i = 0;
