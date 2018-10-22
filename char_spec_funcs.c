@@ -30,10 +30,20 @@ char *get_string(va_list args)
 	char *ret;
 
 	str = va_arg(args, char *);
-	ret = malloc(_strlen(str) + 1);
-	if (!ret)
-		return (NULL);
-	ret = _strcpy(ret, str);
+	if (str)
+	{
+		ret = malloc(_strlen(str) + 1);
+		if (!ret)
+			return (NULL);
+		ret = _strcpy(ret, str);
+	}
+	else
+	{
+		ret = malloc(6 + 1);
+		if (!ret)
+			return (NULL);
+		ret = _strcpy(ret, "(null)");
+	}
 	return (ret);
 }
 /**
