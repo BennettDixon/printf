@@ -22,7 +22,7 @@ int get_numbase_len(unsigned int num, unsigned int base)
  * @base: base of number used in conversion, only works up to base 36
  * @buff: buffer to fill with result of conversion
  * @buff_size: size of buffer in bytes
- * 
+ *
  * Return: always void.
  */
 void fill_numbase_buff(unsigned int num, unsigned int base,
