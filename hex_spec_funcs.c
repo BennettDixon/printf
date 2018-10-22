@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-char *get_hex_n(unsigned int num);
-
 /**
  * get_hex_n - gets a string that is the hex representation of an integer.
  * @num: The unsigned integer.
@@ -46,15 +44,10 @@ char *get_hex(va_list args)
 char *get_hex_upper(va_list args)
 {
 	char *ret;
-	int i = 0;
 
 	ret = get_hex(args);
-	while (ret[i])
-	{
-		if (ret[i] >= 'a' && ret[i] <= 'z')
-			ret[i] -= 32;
-		i++;
-	}
+	_string_upper(ret);
+
 	return (ret);
 }
 /**

@@ -31,3 +31,21 @@ char *_strcpy(char *dest, char *src)
 	dest[i] = '\0';
 	return (dest);
 }
+/**
+ * _toupper - Converts lowercase characters to uppercase.
+ * @c: A character.
+ *
+ * Return: ASCII value of the uppercase.
+ */
+void _string_upper(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] >= 'a' && str[i] <= 'z')
+			str[i] -= 32;
+		i++;
+	}
+}
