@@ -1,6 +1,5 @@
 #include "holberton.h"
 #include <stdlib.h>
-#include <stdio.h>
 
 void print_helper(const char *format, unsigned int *, char *, unsigned int *,
 		char *, unsigned int *, int *, va_list);
