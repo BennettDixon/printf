@@ -23,7 +23,7 @@ typedef struct flag_specifier
 {
 	char flag;
 	char *specs;
-	char *(*f)(char*);
+	char *(*f)(char *);
 } flag_t;
 
 int _printf(const char *format, ...);
