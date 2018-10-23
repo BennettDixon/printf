@@ -37,6 +37,7 @@ int _printf(const char *format, ...)
 		{
 			print_helper(format, &ind, buff, &buff_i, &busy,
 					&beg_ind, args);
+			busy = 0;
 		}
 		else
 			buff[buff_i++] = format[ind];
