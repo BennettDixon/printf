@@ -43,6 +43,11 @@ int _printf(const char *format, ...)
 			buff[buff_i++] = format[ind];
 		ind++;
 	}
+	if (busy && format[ind] == '\0')
+	{
+		print_buff(buff, beg_ind - 1);
+		return (-1);
+	}
 	if (buff_i > BUFF_SIZE)
 		buff_i = BUFF_SIZE;
 	length = print_buff(buff, buff_i);
