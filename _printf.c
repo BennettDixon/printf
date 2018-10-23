@@ -19,7 +19,6 @@ int _printf(const char *format, ...)
 	va_list args;
 	int flags[3] = {0};
 
-
 	buff = create_buff(BUFF_SIZE);
 	if (!format || !buff)
 		return (-1);
@@ -52,6 +51,19 @@ int _printf(const char *format, ...)
 	va_end(args);
 	return (length);
 }
+/**
+ * print_helper - print helper function to split up logic of _printf
+ * @format: pointer to format string
+ * @f_index: pointer to index of format string
+ * @buff: pointer to buffer
+ * @b_index: pointer to index of buffer
+ * @busy: pointer to printf isbusy
+ * @beg_index: pointer to beginning index (where % was found)
+ * @flags: pointer to int array pertaining to flag's being used
+ * @args: va_list to get argument from
+ *
+ * Return: always void
+ */
 void print_helper(const char *format, unsigned int *f_index, char *buff,
 		unsigned int *b_index, char *busy, unsigned int *beg_index,
 		int *flags, va_list args)
