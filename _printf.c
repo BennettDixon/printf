@@ -89,7 +89,9 @@ void print_helper(const char *format, unsigned int *f_index, char *buff,
 	if (flag_index > -1)
 		flags[flag_index] = 1;
 	else
+	{
 		/* percision */
+	}
 }
 
 /**
