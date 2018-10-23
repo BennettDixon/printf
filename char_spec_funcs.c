@@ -10,11 +10,18 @@
 char *get_char(va_list args)
 {
 	char *str;
+	char c;
 
+	c = va_arg(args, int);
 	str = malloc(2);
+
 	if (!str)
 		return (NULL);
-	str[0] = va_arg(args, int);
+	if (c)
+
+		str[0] = c;
+	else
+		str[0] = '\0';
 	str[1] = '\0';
 	return (str);
 }
@@ -30,10 +37,21 @@ char *get_string(va_list args)
 	char *ret;
 
 	str = va_arg(args, char *);
-	ret = malloc(_strlen(str) + 1);
-	if (!ret)
-		return (NULL);
-	ret = _strcpy(ret, str);
+
+	if (str)
+	{
+		ret = malloc(_strlen(str) + 1);
+		if (!ret)
+			return (NULL);
+		ret = _strcpy(ret, str);
+	}
+	else
+	{
+		ret = malloc(6 + 1);
+		if (!ret)
+			return (NULL);
+		ret = _strcpy(ret, "(null)");
+	}
 	return (ret);
 }
 /**

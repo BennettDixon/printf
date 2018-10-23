@@ -10,13 +10,12 @@
 char *create_buff(unsigned int bytes)
 {
 	char *new_buff;
-	unsigned int i;
 
 	new_buff = malloc(bytes);
 	if (!new_buff)
 		return (NULL);
-	for (i = 0; i < bytes; i++)
-		new_buff[i] = 0;
+	/*for (i = 0; i < bytes; i++)*/
+	/*	new_buff[i] = 0; */
 	return (new_buff);
 }
 /**

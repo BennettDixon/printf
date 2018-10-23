@@ -21,6 +21,8 @@ char *(*get_string_func(char ch))(va_list)
 		{ 'x', get_hex },
 		{ 'X', get_hex_upper },
 		{ 'p', get_pointer },
+		{ 'r', get_reverse },
+		{ 'R', get_rot },
 		{ NULL, NULL }
 	};
 	int i = 0;
