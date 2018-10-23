@@ -31,6 +31,7 @@ char *create_buff(unsigned int bytes);
 void copy_buff(char *str, unsigned int *index, char *buff, unsigned int b_s);
 unsigned int print_buff(char *buff, unsigned int buff_size);
 char *(*get_string_func(char ch))(va_list);
+char *(*get_flag_func(int flag_index, char spec))(char *);
 char *get_char(va_list);
 char *get_string(va_list);
 char *get_nonprint_string(va_list);
