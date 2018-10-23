@@ -35,32 +35,38 @@ char *get_reverse(va_list args)
  */
 char *get_rot(va_list args)
 {
-	int index;
-	unsigned char *temp_c;
+	int index, length;
+	unsigned char temp_c;
 	char is_upper;
 	char *str, *ret;
 
 	str = va_arg(args, char *);
-	ret = malloc(_strlen(str) + 1);
+	length = _strlen(str);
+	ret = malloc(length + 1);
 	if (!ret)
 		return (NULL);
 	index = 0;
 	while (str[index])
 	{
-		temp_c = &(unsigned char)str[index];
-		is_upper = (*temp_c >= 'A' && *temp_c <= 'Z');
-		*temp_c += 13;
-		if (is_upper)
+		temp_c = (unsigned char)str[index];
+		if (_isalpha(temp_c))
 		{
-			if (*temp_c > 'Z')
-				*temp_c -= 26;
+			is_upper = (temp_c >= 'A' && temp_c <= 'Z');
+			temp_c += 13;
+			if (is_upper)
+			{
+				if (temp_c > 'Z')
+					temp_c -= 26;
+			}
+			else
+			{
+				if (temp_c > 'z')
+					temp_c -= 26;
+			}
 		}
-		else
-		{
-			if (*temp_c > 'z')
-				*temp_c -= 26;
-		}
+		ret[index] = (char)temp_c;
 		index++;
 	}
+	ret[length] = '\0';
 	return (ret);
 }
