@@ -12,7 +12,7 @@ int ch_in_array(char c, char *ptr);
 int is_specifier(char c)
 {
 	char spec[] = {'c', 's', 'S', '%', 'd', 'i', 'b', 'u', 'o', 'x', 'X'
-		, 'p', 'r', NULL};
+		, 'p', 'r', 'R', NULL};
 
 	return (ch_in_array(c, spec));
 }

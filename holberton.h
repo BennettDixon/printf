@@ -31,6 +31,7 @@ char *get_hex(va_list);
 char *get_hex_upper(va_list);
 char *get_pointer(va_list);
 char *get_reverse(va_list);
+char *get_rot(va_list);
 int is_specifier(char c);
 int is_flag(char c);
 int _isalpha(char c);
