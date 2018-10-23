@@ -1,6 +1,6 @@
 #include "holberton.h"
 #include <stdlib.h>
-
+#include <stdio.h>
 void print_helper(const char *format, unsigned int *, char *, unsigned int *,
 		char *, unsigned int *, int *, va_list);
 
@@ -43,6 +43,11 @@ int _printf(const char *format, ...)
 		else
 			buff[buff_i++] = format[ind];
 		ind++;
+	}
+	if (busy && format[ind] == '\0')
+	{
+		print_buff(buff, beg_ind - 1);
+		return (-1);
 	}
 	if (buff_i > BUFF_SIZE)
 		buff_i = BUFF_SIZE;
@@ -94,6 +99,7 @@ void print_helper(const char *format, unsigned int *f_index, char *buff,
 		else
 		{
 			*f_index = *beg_index;
+			printf("print: %c\n", format[*f_index]);
 			buff[(*b_index)++] = format[*f_index];
 			*busy = 0;
 		}
