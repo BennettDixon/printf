@@ -65,7 +65,10 @@ void print_helper(const char *format, unsigned int *f_index, char *buff,
 				va_end(args);
 				return;
 			}
-			copy_buff(temp, b_index, buff, BUFF_SIZE);
+			if (temp[0] == '\0' && format[*f_index] == 'c')
+				buff[(*b_index)++] = temp[0];
+			else
+				copy_buff(temp, b_index, buff, BUFF_SIZE);
 			*busy = 0;
 		}
 		else

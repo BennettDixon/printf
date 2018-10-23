@@ -10,11 +10,18 @@
 char *get_char(va_list args)
 {
 	char *str;
+	char c;
 
+	c = va_arg(args, int);
 	str = malloc(2);
+
 	if (!str)
 		return (NULL);
-	str[0] = va_arg(args, int);
+	if (c)
+
+		str[0] = c;
+	else
+		str[0] = '\0';
 	str[1] = '\0';
 	return (str);
 }
@@ -28,20 +35,10 @@ char *get_string(va_list args)
 {
 	char *str;
 	char *ret;
-	int i = 0;
-	char is_str = 1;
 
 	str = va_arg(args, char *);
-	while (str[i])
-	{
-		if (str[i] >= 127)
-		{
-			is_str = 0;
-			break;
-		}
-		i++;
-	}
-	if (is_str)
+
+	if (str)
 	{
 		ret = malloc(_strlen(str) + 1);
 		if (!ret)
