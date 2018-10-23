@@ -46,6 +46,8 @@ int _printf(const char *format, ...)
 			buff[buff_i++] = format[ind];
 		ind++;
 	}
+	if (buff_i > BUFF_SIZE)
+		buff_i = BUFF_SIZE;
 	length = print_buff(buff, buff_i);
 	free(buff);
 	va_end(args);
