@@ -1,8 +1,11 @@
 #include "holberton.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 void print_helper(const char *format, unsigned int *, char *, unsigned int *,
-		char *, unsigned int *, va_list);
+		char *, unsigned int *, int *, va_list);
+
+char *perform_flag_funcs(int *flags, char *str, char spec);
 /**
   * _printf - Prints variatic arguments based on format string.
   * @format: String passed, may contain zero, or more directives.
@@ -15,6 +18,7 @@ int _printf(const char *format, ...)
 	char *buff, busy;
 	unsigned int ind, beg_ind, buff_i, length;
 	va_list args;
+	int flags[3] = {0};
 
 
 	buff = create_buff(BUFF_SIZE);
@@ -36,8 +40,7 @@ int _printf(const char *format, ...)
 		else if (busy)
 		{
 			print_helper(format, &ind, buff, &buff_i, &busy,
-					&beg_ind, args);
-			busy = 0;
+					&beg_ind, flags, args);
 		}
 		else
 			buff[buff_i++] = format[ind];
@@ -50,9 +53,10 @@ int _printf(const char *format, ...)
 }
 void print_helper(const char *format, unsigned int *f_index, char *buff,
 		unsigned int *b_index, char *busy, unsigned int *beg_index,
-		va_list args)
+		int *flags, va_list args)
 {
 	char *temp;
+	int flag_index;
 
 	if (_isalpha(format[*f_index]) || format[*f_index] == '%'
 		|| format[(*f_index) + 1] == '\0')
@@ -69,7 +73,9 @@ void print_helper(const char *format, unsigned int *f_index, char *buff,
 			if (temp[0] == '\0' && format[*f_index] == 'c')
 				buff[(*b_index)++] = temp[0];
 			else
-				copy_buff(temp, b_index, buff, BUFF_SIZE);
+				temp = perform_flag_funcs(flags, temp,
+							format[*f_index]);
+			copy_buff(temp, b_index, buff, BUFF_SIZE);
 			*busy = 0;
 		}
 		else
@@ -79,12 +85,39 @@ void print_helper(const char *format, unsigned int *f_index, char *buff,
 			*busy = 0;
 		}
 	}
-	if (is_flag(format[*f_index]))
-	{
-		/* flags */
-	}
+	flag_index = is_flag(format[*f_index]);
+	if (flag_index > -1)
+		flags[flag_index] = 1;
 	else
 	{
 		/* percision */
 	}
+}
+
+/**
+ * perform_flag_funcs - Perform flag functions that were encountered on the
+ * string.
+ * @flags: An array int to keep track of which flags were encountered. 1 if
+ * encountered, otherwise 0.
+ * @temp: The string to perform functions on.
+ * @spec: The specifier.
+ * Return: char pointer to the formatted string.
+ */
+
+char *perform_flag_funcs(int *flags, char *temp, char spec)
+{
+	int i;
+	char *(*f)(char *);
+
+	for (i = 0; i < 3; i++)
+	{
+		if (flags[i])
+		{
+			f = get_flag_func(i, spec);
+			flags[i] = 0;
+			if (f)
+				temp = f(temp);
+		}
+	}
+	return (temp);
 }

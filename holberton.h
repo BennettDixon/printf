@@ -13,11 +13,25 @@ typedef struct type_specifier
 	char t;
 	char *(*f)(va_list);
 } spec_t;
+/**
+ * struct flag_specifier - contains a flag and it's valid specifiers and func
+ * @flag: flag represented as character
+ * @specs: char pointer to array of valid specifiers for flag
+ * @f: get_flag function that returns a char pointer and modifies a char *
+ */
+typedef struct flag_specifier
+{
+	char flag;
+	char *specs;
+	char *(*f)(char*);
+} flag_t;
+
 int _printf(const char *format, ...);
 char *create_buff(unsigned int bytes);
 void copy_buff(char *str, unsigned int *index, char *buff, unsigned int b_s);
 unsigned int print_buff(char *buff, unsigned int buff_size);
 char *(*get_string_func(char ch))(va_list);
+char *(*get_flag_func(int flag_index, char spec))(char *);
 char *get_char(va_list);
 char *get_string(va_list);
 char *get_nonprint_string(va_list);
@@ -32,6 +46,12 @@ char *get_hex_upper(va_list);
 char *get_pointer(va_list);
 char *get_reverse(va_list);
 char *get_rot(va_list);
+char *do_plus_flag(char *str);
+char *do_spc_flag(char *str);
+char *do_octal_flag(char *str);
+char *do_hex_flag(char *str);
+char *do_hex_upper_flag(char *str);
+int ch_in_array(char c, char *ptr);
 int is_specifier(char c);
 int is_flag(char c);
 int _isalpha(char c);

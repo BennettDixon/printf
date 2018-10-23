@@ -1,7 +1,5 @@
 #define NULL 0
-
-int ch_in_array(char c, char *ptr);
-
+#include "holberton.h"
 /**
   * is_specifier - Checks if the character is a format specifier.
   * @c: The character passed.
@@ -21,15 +19,21 @@ int is_specifier(char c)
   * is_flag - Checks if the character is a format flag.
   * @c: The character passed.
   *
-  * Return: 1 if the character is a flag, 0 otherwise.
+  * Return: index if the character is a flag, -1 otherwise.
   */
 
 int is_flag(char c)
 {
-	c = 'a';
-	if (c)
-		c = 'b';
-	return (0);
+	char flags[] = { '+', ' ', '#', NULL };
+	int i = 0;
+
+	while (flags[i])
+	{
+		if (c == flags[i])
+			return (i);
+		i++;
+	}
+	return (-1);
 }
 
 /**
