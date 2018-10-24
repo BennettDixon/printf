@@ -49,9 +49,9 @@ typedef struct print_helper_s
 	char *dot;
 	char *busy;
 	/* integer values */
-	unsigned int *f_ind;
-	unsigned int *buff_ind;
-	unsigned int *beg_ind;
+	unsigned int *f_i;
+	unsigned int *buff_i;
+	unsigned int *beg_i;
 	int *width;
 	int *precision;
 	int *spec_c;
