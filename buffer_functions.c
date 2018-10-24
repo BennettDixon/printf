@@ -55,3 +55,23 @@ unsigned int print_buff(char *buff, unsigned int buff_size)
 	bytes_written = write(1, buff, buff_size);
 	return (bytes_written);
 }
+
+/**
+ * free_all - Frees all memory in structure and args.
+ * @help_s: The pointer to a malloced structure.
+ * @args: Pointer to a va_list.
+ *
+ * Return: Void.
+ */
+void free_all(printh_t *help_s, va_list args)
+{
+	if (help_s)
+	{
+		if (help_s->flags)
+			free(help_s->flags);
+		if (help_s->buff)
+			free(help_s->buff);
+		free(help_s);
+	}
+	va_end(args);
+}
