@@ -1,5 +1,6 @@
 #include "holberton.h"
 #include <stdlib.h>
+#include <stdio.h>
 int print_helper(const char *format, unsigned int *, char *, unsigned int *,
 		char *, unsigned int *, int *, int *, int *, int *, int *, va_list);
 
@@ -34,6 +35,16 @@ int _printf(const char *format, ...)
 		{
 			beg_ind = ind;
 			busy = 1;
+			if (format[ind + 1] == '\0')
+			{
+				if (spec_c)
+				{
+					buff[buff_i++] = format[ind];
+					busy = 0;
+				}
+				else
+					return (-1);
+			}
 		}
 		else if (busy)
 		{
@@ -75,6 +86,7 @@ int _printf(const char *format, ...)
  * @width: width pulled from format string
  * @precision: precision pulled from format string
  * @dot: boolean value 0 or 1 representing precision dot found or not
+ * @spec_c: Counter for number of non flag characters encountered during busy.
  * @args: va_list of args to advance and use
  *
  * Return: 1 on success, 0 on failure
