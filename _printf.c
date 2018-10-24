@@ -1,6 +1,6 @@
 #include "holberton.h"
 #include <stdlib.h>
-void print_helper(const char *format, unsigned int *, char *, unsigned int *,
+int print_helper(const char *format, unsigned int *, char *, unsigned int *,
 		char *, unsigned int *, int *, int *, int *, int *, va_list);
 
 void get_width_precision(char c, int *width, int *precision, int *dot,
@@ -16,7 +16,7 @@ char *perform_flag_funcs(int *flags, char *str, char spec);
 int _printf(const char *format, ...)
 {
 	char *buff, busy;
-	unsigned int ind, beg_ind, buff_i, length, width, precision, dot;
+	unsigned int ind, beg_ind, buff_i, length, width, precision, dot, E;
 	va_list args;
 	int flags[3] = {0};
 
@@ -25,7 +25,7 @@ int _printf(const char *format, ...)
 		return (-1);
 	va_start(args, format);
 	length = 0, ind = 0, buff_i = 0, busy = 0, width = 0, precision = 0;
-	dot = 0;
+	dot = 0, E = 0;
 
 	while (format[ind])
 	{
@@ -36,9 +36,14 @@ int _printf(const char *format, ...)
 		}
 		else if (busy)
 		{
-			print_helper(format, &ind, buff, &buff_i, &busy,
-					&beg_ind, flags, &width, &precision, 
-					&dot, args);
+			E = print_helper(format, &ind, buff, &buff_i, &busy,
+			&beg_ind, flags, &width, &precision, &dot, args);
+			if (!E)
+			{
+				free(buff);
+				va_end(args);
+				return (-1);
+			}
 		}
 		else
 			buff[buff_i++] = format[ind];
@@ -71,9 +76,9 @@ int _printf(const char *format, ...)
  * @dot: boolean value 0 or 1 representing precision dot found or not
  * @args: va_list of args to advance and use
  *
- * Return: always void
+ * Return: 1 on success, 0 on failure
  */
-void print_helper(const char *format, unsigned int *f_index, char *buff,
+int print_helper(const char *format, unsigned int *f_index, char *buff,
 		unsigned int *b_index, char *busy, unsigned int *beg_index,
 		int *flags, int *width, int *precision, int *dot, va_list args)
 {
@@ -87,16 +92,14 @@ void print_helper(const char *format, unsigned int *f_index, char *buff,
 		{
 			temp = get_string_func(format[*f_index])(args);
 			if (!temp)
-			{
-				free(buff);
-				va_end(args);
-				return;
-			}
+				return (0);
 			if (temp[0] == '\0' && format[*f_index] == 'c')
 				buff[(*b_index)++] = temp[0];
 			else
 				temp = perform_flag_funcs(flags, temp,
 							format[*f_index]);
+			if (!temp)
+				return (0);
 			copy_buff(temp, b_index, buff, BUFF_SIZE);
 			*busy = 0;
 		}
@@ -114,6 +117,7 @@ void print_helper(const char *format, unsigned int *f_index, char *buff,
 	flag_index = is_flag(format[*f_index]);
 	if (flag_index > -1)
 		flags[flag_index] = 1;
+	return (1);
 }
 /**
  * get_width_precision - gets the width and precision for a format string
@@ -146,7 +150,6 @@ void get_width_precision(char c, int *width, int *precision, int *dot,
 			*precision = va_arg(args, int);
 	}
 }
-
 /**
  * perform_flag_funcs - Perform flag functions that were encountered on the
  * string.
@@ -170,6 +173,8 @@ char *perform_flag_funcs(int *flags, char *temp, char spec)
 			flags[i] = 0;
 			if (f)
 				temp = f(temp);
+			if (!temp)
+				return (NULL);
 		}
 	}
 	return (temp);
