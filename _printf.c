@@ -1,12 +1,9 @@
 #include "holberton.h"
 #include <stdlib.h>
-#include <stdio.h>
-int print_helper(const char *format, unsigned int *, char *, unsigned int *,
-		char *, unsigned int *, int *, int *, int *, int *, int *, va_list);
-
-void get_width_precision(char c, int *width, int *precision, int *dot,
-			va_list args);
+int print_helper(printh_t *help_s, va_list args);
+void get_width_precision(printh_t *help_s, va_list args);
 char *perform_flag_funcs(int *flags, char *str, char spec);
+printh_t *init_help_s(const char *);
 /**
   * _printf - Prints variatic arguments based on format string.
   * @format: String passed, may contain zero, or more directives.
@@ -16,142 +13,129 @@ char *perform_flag_funcs(int *flags, char *str, char spec);
 
 int _printf(const char *format, ...)
 {
-	char *buff, busy;
-	unsigned int ind, beg_ind, buff_i, length;
-	int E, width, precision, dot, spec_c;
+	unsigned int length;
+	int E;
 	va_list args;
-	int flags[3] = {0};
+	printh_t *help_s;
 
-	buff = create_buff(BUFF_SIZE);
-	if (!format || !buff)
+	if (!format)
 		return (-1);
 	va_start(args, format);
-	length = 0, ind = 0, buff_i = 0, busy = 0, width = 0, precision = 0;
-	dot = 0, E = 0, spec_c = 0;
-
-	while (format[ind])
+	help_s = init_help_s(format);
+	if (!help_s)
 	{
-		if (format[ind] == '%' && !busy)
+		va_end(args);
+		return (-1);
+	}
+	length = 0, E = 0;
+
+	while (format[help_s->f_i])
+	{
+		if (format[help_s->f_i] == '%' && !help_s->busy)
 		{
-			beg_ind = ind;
-			busy = 1;
-			if (format[ind + 1] == '\0')
+			help_s->beg_i = help_s->f_i;
+			help_s->busy = 1;
+			if (format[help_s->f_i + 1] == '\0')
 			{
-				if (spec_c)
+				if (help_s->spec_c)
 				{
-					buff[buff_i++] = format[ind];
-					busy = 0;
+					help_s->buff[help_s->buff_i++] = format[help_s->f_i];
+					help_s->busy = 0;
 				}
 				else
 				{
-					free(buff);
-					va_end(args);
+					free_all(help_s, args);
 					return (-1);
 				}
 			}
 		}
-		else if (busy)
+		else if (help_s->busy)
 		{
-			E = print_helper(format, &ind, buff, &buff_i, &busy,
-			&beg_ind, flags, &width, &precision, &dot, &spec_c, args);
+			E = print_helper(help_s, args);
 			if (!E)
 			{
-				free(buff);
-				va_end(args);
+				free_all(help_s, args);
 				return (-1);
 			}
 		}
 		else
-			buff[buff_i++] = format[ind];
-		ind++;
+			help_s->buff[help_s->buff_i++] = format[help_s->f_i];
+		help_s->f_i++;
 	}
-	if (busy && format[ind] == '\0')
+	if (help_s->busy && format[help_s->f_i] == '\0')
 	{
-		print_buff(buff, beg_ind - 1);
+		print_buff(help_s->buff, help_s->beg_i - 1);
+		free_all(help_s, args);
 		return (-1);
 	}
-	if (buff_i > BUFF_SIZE)
-		buff_i = BUFF_SIZE;
-	length = print_buff(buff, buff_i);
-	free(buff);
-	va_end(args);
+	if (help_s->buff_i > BUFF_SIZE)
+		help_s->buff_i = BUFF_SIZE;
+	length = print_buff(help_s->buff, help_s->buff_i);
+	free_all(help_s, args);
 	return (length);
 }
 /**
  * print_helper - print helper function to split up logic of _printf
- * @format: pointer to format string
- * @f_index: pointer to index of format string
- * @buff: pointer to buffer
- * @b_index: pointer to index of buffer
- * @busy: pointer to printf isbusy
- * @beg_index: pointer to beginning index (where % was found)
- * @flags: pointer to int array pertaining to flag's being used
- * @args: va_list to get argument from
- * @width: width pulled from format string
- * @precision: precision pulled from format string
- * @dot: boolean value 0 or 1 representing precision dot found or not
- * @spec_c: Counter for number of non flag characters encountered during busy.
+ * @help_s: pointer to our helper struct to contain variables for passing
  * @args: va_list of args to advance and use
  *
  * Return: 1 on success, 0 on failure
  */
-int print_helper(const char *format, unsigned int *f_index, char *buff,
-		unsigned int *b_index, char *busy, unsigned int *beg_index,
-		int *flags, int *width, int *precision, int *dot, int *spec_c,
-		va_list args)
+int print_helper(printh_t *help_s, va_list args)
 {
 	char *temp;
 	int flag_index, i = 0;
 
-	flag_index = is_flag(format[*f_index]);
+	flag_index = is_flag(help_s->format[help_s->f_i]);
 	if (flag_index > -1)
-		flags[flag_index] = 1;
+		help_s->flags[flag_index] = 1;
 	else
-		(*spec_c)++;
-	if (_isalpha(format[*f_index]) || format[*f_index] == '%')
+		(help_s->spec_c)++;
+	if (_isalpha(help_s->format[help_s->f_i])
+		|| help_s->format[help_s->f_i] == '%')
 	{
-		if (is_specifier(format[*f_index]))
+		if (is_specifier(help_s->format[help_s->f_i]))
 		{
-			temp = get_string_func(format[*f_index])(args);
+			temp = get_string_func(help_s->format[help_s->f_i])(args);
 			if (!temp)
 				return (0);
-			if (temp[0] == '\0' && format[*f_index] == 'c')
+			if (temp[0] == '\0' && help_s->format[help_s->f_i] == 'c')
 			{
-				for (i = 0; i < *precision - 1; i++)
-					buff[(*b_index)++] = ' ';
-				buff[(*b_index)++] = '\0';
-				*busy = 0;
+				for (i = 0; i < help_s->width - 1; i++)
+					help_s->buff[help_s->buff_i++] = ' ';
+				help_s->buff[help_s->buff_i++] = '\0';
+				help_s->busy = 0;
 				return (1);
 			}
 			else
 			{
-				temp = perform_flag_funcs(flags, temp,
-							format[*f_index]);
-				temp = do_width(temp, *precision, 1);
+				temp = perform_flag_funcs(help_s->flags, temp,
+						help_s->format[help_s->f_i]);
+				temp = do_width(temp, help_s->width, 1);
 			}
 			if (!temp)
 				return (0);
-			copy_buff(temp, b_index, buff, BUFF_SIZE);
-			*busy = 0;
+			copy_buff(temp, &(help_s->buff_i), help_s->buff, BUFF_SIZE);
+			help_s->busy = 0;
 		}
 		else
 		{
-			*f_index = *beg_index;
-			buff[(*b_index)++] = format[*f_index];
-			*busy = 0;
+			help_s->f_i = help_s->beg_i;
+			help_s->buff[(help_s->buff_i)++] = help_s->format[help_s->f_i];
+			help_s->busy = 0;
 		}
 	}
-	else if (_isdigit(format[*f_index]) || format[*f_index] == '.'
-		|| format[*f_index] == '*')
-		get_width_precision(format[*f_index], width,
-					precision, dot, args);
-	else if (format[(*f_index) + 1] == '\0')
+	else if (_isdigit(help_s->format[help_s->f_i]) ||
+			help_s->format[help_s->f_i] == '.' ||
+			help_s->format[help_s->f_i] == '*')
+		get_width_precision(help_s, args);
+	else if (help_s->format[(help_s->f_i) + 1] == '\0')
 	{
-		if (*spec_c)
+		if (help_s->spec_c)
 		{
-			*f_index = *beg_index;
-			buff[(*b_index)++] = format[*f_index];
-			*busy = 0;
+			help_s->f_i = help_s->beg_i;
+			help_s->buff[(help_s->buff_i)++] = help_s->format[help_s->f_i];
+			help_s->busy = 0;
 		}
 		else
 			return (0);
@@ -159,34 +143,73 @@ int print_helper(const char *format, unsigned int *f_index, char *buff,
 	return (1);
 }
 /**
+ * init_help_s - initializes print helper structure, creating space for it
+ * @format: pointer to format specifier string to set as pointer
+ *
+ * Return: pointer to structure created in memory
+ */
+printh_t *init_help_s(const char *format)
+{
+	printh_t *help_s;
+
+	help_s = malloc(sizeof(*help_s));
+	if (!help_s)
+		return (NULL);
+	help_s->flags = calloc(3, sizeof(int));
+	if (!help_s->flags)
+	{
+		free(help_s);
+		return (NULL);
+	}
+	help_s->buff = create_buff(BUFF_SIZE);
+	if (!help_s->buff)
+	{
+		free(help_s->flags);
+		free(help_s);
+		return (NULL);
+	}
+	help_s->format = format;
+	help_s->dot = 0;
+	help_s->busy = 0;
+	help_s->f_i = 0;
+	help_s->buff_i = 0;
+	help_s->beg_i = 0;
+	help_s->width = 0;
+	help_s->precision = 0;
+	help_s->spec_c = 0;
+	return (help_s);
+}
+/**
  * get_width_precision - gets the width and precision for a format string
- * @c: character currently present in loop over format string
- * @width: pointer to our width, default starts at 0
- * @precision: pointer to our precision, default starts at 0
- * @dot: pointer to a integer representing true/false if we found a dot
- * @args: pointer to our args to pull width from if * specified instead of num
+ * @help_s: pointer to our helper struct to contain variables for passing
+ * @args: va_list of args to advance and use
  *
  * Return: always void
  */
-void get_width_precision(char c, int *width, int *precision, int *dot,
-			va_list args)
+void get_width_precision(printh_t *help_s, va_list args)
 {
+	char c;
+	char dot;
+
+	c = help_s->format[help_s->f_i];
+	dot = help_s->dot;
+
 	if (c == '.')
-		*dot = 1;
+		help_s->dot = 1;
 	else if (_isdigit(c))
 	{
 		c -= '0';
 		if (!dot)
-			*width = (c + (*width * 10));
+			help_s->width = (c + (help_s->width * 10));
 		else
-			*precision = (c + (*precision * 10));
+			help_s->precision = (c + (help_s->precision * 10));
 	}
 	else if (c == '*')
 	{
 		if (!dot)
-			*width = va_arg(args, int);
+			help_s->width = va_arg(args, int);
 		else
-			*precision = va_arg(args, int);
+			help_s->precision = va_arg(args, int);
 	}
 }
 /**
@@ -196,6 +219,7 @@ void get_width_precision(char c, int *width, int *precision, int *dot,
  * encountered, otherwise 0.
  * @temp: The string to perform functions on.
  * @spec: The specifier.
+ *
  * Return: char pointer to the formatted string.
  */
 
