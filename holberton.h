@@ -55,6 +55,7 @@ int ch_in_array(char c, char *ptr);
 int is_specifier(char c);
 int is_flag(char c);
 int _isalpha(char c);
+int _isdigit(char c);
 int is_printable(char c);
 int _strlen(char *s);
 void _string_upper(char *str);

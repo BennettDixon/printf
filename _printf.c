@@ -1,8 +1,10 @@
 #include "holberton.h"
 #include <stdlib.h>
 void print_helper(const char *format, unsigned int *, char *, unsigned int *,
-		char *, unsigned int *, int *, va_list);
+		char *, unsigned int *, int *, int *, int *, int *, va_list);
 
+void get_width_precision(char c, int *width, int *precision, int *dot,
+			va_list *args);
 char *perform_flag_funcs(int *flags, char *str, char spec);
 /**
   * _printf - Prints variatic arguments based on format string.
@@ -14,7 +16,7 @@ char *perform_flag_funcs(int *flags, char *str, char spec);
 int _printf(const char *format, ...)
 {
 	char *buff, busy;
-	unsigned int ind, beg_ind, buff_i, length;
+	unsigned int ind, beg_ind, buff_i, length, width, precision, dot;
 	va_list args;
 	int flags[3] = {0};
 
@@ -22,10 +24,8 @@ int _printf(const char *format, ...)
 	if (!format || !buff)
 		return (-1);
 	va_start(args, format);
-	length = 0;
-	ind = 0;
-	buff_i = 0;
-	busy = 0;
+	length = 0, ind = 0, buff_i = 0, busy = 0, width = 0, precision = 0;
+	dot = 0;
 
 	while (format[ind])
 	{
@@ -37,7 +37,8 @@ int _printf(const char *format, ...)
 		else if (busy)
 		{
 			print_helper(format, &ind, buff, &buff_i, &busy,
-					&beg_ind, flags, args);
+					&beg_ind, flags, width, precision, dot,
+					 args);
 		}
 		else
 			buff[buff_i++] = format[ind];
@@ -70,7 +71,7 @@ int _printf(const char *format, ...)
  */
 void print_helper(const char *format, unsigned int *f_index, char *buff,
 		unsigned int *b_index, char *busy, unsigned int *beg_index,
-		int *flags, va_list args)
+		int *flags, int *width, int *precision, int *dot, va_list args)
 {
 	char *temp;
 	int flag_index;
@@ -95,6 +96,12 @@ void print_helper(const char *format, unsigned int *f_index, char *buff,
 			copy_buff(temp, b_index, buff, BUFF_SIZE);
 			*busy = 0;
 		}
+		else if (_isdigit(format[*f_index]) || format[*f_index] == '.'
+			|| format[*f_index] == '*' )
+		{
+			get_width_precision(format[*f_index], *width,
+						*precision, *dot, &args);
+		}
 		else
 		{
 			*f_index = *beg_index;
@@ -108,6 +115,28 @@ void print_helper(const char *format, unsigned int *f_index, char *buff,
 	else
 	{
 		/* percision */
+	}
+}
+
+void get_width_precision(char c, int *width, int *precision, int *dot,
+			va_list *args)
+{
+	if (c == '.')
+		*dot = 1;
+	else if (_isdigit(c))
+	{
+		c -= '0';
+		if (!dot)
+			*width += (c + (*width * 10));
+		else
+			*precision += (c + (*precision * 10));
+	}
+	else if (c == '*')
+	{
+		if (!dot)
+			*width = va_arg(args, int);
+		else
+			*precision = va_arg(args, int);
 	}
 }
 
