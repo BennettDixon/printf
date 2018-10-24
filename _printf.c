@@ -43,7 +43,11 @@ int _printf(const char *format, ...)
 					busy = 0;
 				}
 				else
+				{
+					free(buff);
+					va_end(args);
 					return (-1);
+				}
 			}
 		}
 		else if (busy)
@@ -141,7 +145,7 @@ int print_helper(const char *format, unsigned int *f_index, char *buff,
 		|| format[*f_index] == '*')
 		get_width_precision(format[*f_index], width,
 					precision, dot, args);
-	if (format[(*f_index) + 1] == '\0')
+	else if (format[(*f_index) + 1] == '\0')
 	{
 		if (*spec_c)
 		{
