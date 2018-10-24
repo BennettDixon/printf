@@ -46,18 +46,18 @@ typedef struct print_helper_s
 	const char *format;
 	char *buff;
 	/* boolean values */
-	char *dot;
-	char *busy;
+	char dot;
+	char busy;
 	/* integer values */
-	unsigned int *f_ind;
-	unsigned int *buff_ind;
-	unsigned int *beg_ind;
-	int *width;
-	int *precision;
-	int *spec_c;
+	unsigned int f_i;
+	unsigned int buff_i;
+	unsigned int beg_i;
+	int width;
+	int precision;
+	int spec_c;
 	/* flags is a pointer to an array of booleans */
 	int *flags;
-}
+} printh_t;
 
 int _printf(const char *format, ...);
 char *create_buff(unsigned int bytes);
