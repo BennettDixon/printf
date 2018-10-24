@@ -57,7 +57,7 @@ typedef struct print_helper_s
 	int spec_c;
 	/* flags is a pointer to an array of booleans */
 	int *flags;
-}
+} printh_t;
 
 int _printf(const char *format, ...);
 char *create_buff(unsigned int bytes);
