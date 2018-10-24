@@ -25,11 +25,44 @@ typedef struct flag_specifier
 	char *specs;
 	char *(*f)(char *);
 } flag_t;
+/**
+ * struct print_helper_s - contains values needed in print helper
+ * @format: pointer to format string
+ * @f_i: pointer to index of format string
+ * @buff: pointer to buffer
+ * @buff_i: pointer to index of buffer
+ * @busy: pointer to printf isbusy
+ * @beg_i: pointer to beginning index (where % was found)
+ * @flags: pointer to int array pertaining to flag's being used
+ * @width: width pulled from format string
+ * @precision: precision pulled from format string
+ * @dot: boolean value 0 or 1 representing precision dot found or not
+ * @spec_c: Counter for number of non flag characters encountered during busy
+ */
+typedef struct print_helper_s
+{
+	/* string  values */
+	const char *format;
+	char *buff;
+	/* boolean values */
+	char dot;
+	char busy;
+	/* integer values */
+	unsigned int f_i;
+	unsigned int buff_i;
+	unsigned int beg_i;
+	int width;
+	int precision;
+	int spec_c;
+	/* flags is a pointer to an array of booleans */
+	int *flags;
+} printh_t;
 
 int _printf(const char *format, ...);
 char *create_buff(unsigned int bytes);
 void copy_buff(char *str, unsigned int *index, char *buff, unsigned int b_s);
 unsigned int print_buff(char *buff, unsigned int buff_size);
+void free_all(printh_t *help_s, va_list args);
 char *(*get_string_func(char ch))(va_list);
 char *(*get_flag_func(int flag_index, char spec))(char *);
 char *get_char(va_list);
