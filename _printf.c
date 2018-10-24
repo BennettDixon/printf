@@ -16,31 +16,34 @@ char *perform_flag_funcs(int *flags, char *str, char spec);
 
 int _printf(const char *format, ...)
 {
-	char *buff, busy;
-	unsigned int ind, beg_ind, buff_i, length;
-	int E, width, precision, dot, spec_c;
+	char *buff;
+	/* ind == *f_ind of struct */
+	unsigned int length;
+	int E;
 	va_list args;
 	int flags[3] = {0};
 
+	if (!format)
+		return (-1);
 	buff = create_buff(BUFF_SIZE);
-	if (!format || !buff)
+	if (!buff)
 		return (-1);
 	va_start(args, format);
-	length = 0, ind = 0, buff_i = 0, busy = 0, width = 0, precision = 0;
-	dot = 0, E = 0, spec_c = 0;
+	printh_t help_s = { format, buff, 0, 0, 0, 0, 0, 0, 0, 0, &flags };
+	length = 0, E = 0;
 
-	while (format[ind])
+	while (format[help_s.f_i])
 	{
-		if (format[ind] == '%' && !busy)
+		if (format[help_s.f_i] == '%' && !help_s.busy)
 		{
-			beg_ind = ind;
-			busy = 1;
-			if (format[ind + 1] == '\0')
+			help_s.beg_i = help_s.f_i;
+			help_s.busy = 1;
+			if (format[help_s.f_i + 1] == '\0')
 			{
-				if (spec_c)
+				if (help_s.spec_c)
 				{
-					buff[buff_i++] = format[ind];
-					busy = 0;
+					buff[help_s.buff_i++] = format[help_s.f_i];
+					help_s.busy = 0;
 				}
 				else
 				{
@@ -50,10 +53,9 @@ int _printf(const char *format, ...)
 				}
 			}
 		}
-		else if (busy)
+		else if (help_s.busy)
 		{
-			E = print_helper(format, &ind, buff, &buff_i, &busy,
-			&beg_ind, flags, &width, &precision, &dot, &spec_c, args);
+			E = print_helper(&help_s, args);
 			if (!E)
 			{
 				free(buff);
@@ -62,17 +64,17 @@ int _printf(const char *format, ...)
 			}
 		}
 		else
-			buff[buff_i++] = format[ind];
-		ind++;
+			buff[help_s.buff_i++] = format[help_s.f_i];
+		help_s.f_i++;
 	}
-	if (busy && format[ind] == '\0')
+	if (help_s.busy && format[help_s.f_i] == '\0')
 	{
-		print_buff(buff, beg_ind - 1);
+		print_buff(buff, help_s.beg_i - 1);
 		return (-1);
 	}
-	if (buff_i > BUFF_SIZE)
-		buff_i = BUFF_SIZE;
-	length = print_buff(buff, buff_i);
+	if (help_s.buff_i > BUFF_SIZE)
+		help_s.buff_i = BUFF_SIZE;
+	length = print_buff(buff, help_s.buff_i);
 	free(buff);
 	va_end(args);
 	return (length);
