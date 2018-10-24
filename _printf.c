@@ -16,7 +16,8 @@ char *perform_flag_funcs(int *flags, char *str, char spec);
 int _printf(const char *format, ...)
 {
 	char *buff, busy;
-	unsigned int ind, beg_ind, buff_i, length, width, precision, dot, E;
+	unsigned int ind, beg_ind, buff_i, length;
+	int E, width, precision, dot;
 	va_list args;
 	int flags[3] = {0};
 
@@ -96,8 +97,11 @@ int print_helper(const char *format, unsigned int *f_index, char *buff,
 			if (temp[0] == '\0' && format[*f_index] == 'c')
 				buff[(*b_index)++] = temp[0];
 			else
+			{
 				temp = perform_flag_funcs(flags, temp,
 							format[*f_index]);
+				temp = do_width(temp, *precision, 1);
+			}
 			if (!temp)
 				return (0);
 			copy_buff(temp, b_index, buff, BUFF_SIZE);
@@ -138,9 +142,9 @@ void get_width_precision(char c, int *width, int *precision, int *dot,
 	{
 		c -= '0';
 		if (!dot)
-			*width += (c + (*width * 10));
+			*width = (c + (*width * 10));
 		else
-			*precision += (c + (*precision * 10));
+			*precision = (c + (*precision * 10));
 	}
 	else if (c == '*')
 	{
