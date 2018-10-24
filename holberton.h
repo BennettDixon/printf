@@ -23,7 +23,7 @@ typedef struct flag_specifier
 {
 	char flag;
 	char *specs;
-	char *(*f)(char*);
+	char *(*f)(char *);
 } flag_t;
 
 int _printf(const char *format, ...);
@@ -51,10 +51,12 @@ char *do_spc_flag(char *str);
 char *do_octal_flag(char *str);
 char *do_hex_flag(char *str);
 char *do_hex_upper_flag(char *str);
+char *do_width(char *str, int width, int space);
 int ch_in_array(char c, char *ptr);
 int is_specifier(char c);
 int is_flag(char c);
 int _isalpha(char c);
+int _isdigit(char c);
 int is_printable(char c);
 int _strlen(char *s);
 void _string_upper(char *str);
