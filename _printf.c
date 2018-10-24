@@ -1,7 +1,8 @@
 #include "holberton.h"
 #include <stdlib.h>
+#include <stdio.h>
 int print_helper(const char *format, unsigned int *, char *, unsigned int *,
-		char *, unsigned int *, int *, int *, int *, int *, va_list);
+		char *, unsigned int *, int *, int *, int *, int *, int *, va_list);
 
 void get_width_precision(char c, int *width, int *precision, int *dot,
 			va_list args);
@@ -17,7 +18,7 @@ int _printf(const char *format, ...)
 {
 	char *buff, busy;
 	unsigned int ind, beg_ind, buff_i, length;
-	int E, width, precision, dot;
+	int E, width, precision, dot, spec_c;
 	va_list args;
 	int flags[3] = {0};
 
@@ -26,7 +27,7 @@ int _printf(const char *format, ...)
 		return (-1);
 	va_start(args, format);
 	length = 0, ind = 0, buff_i = 0, busy = 0, width = 0, precision = 0;
-	dot = 0, E = 0;
+	dot = 0, E = 0, spec_c = 0;
 
 	while (format[ind])
 	{
@@ -34,11 +35,21 @@ int _printf(const char *format, ...)
 		{
 			beg_ind = ind;
 			busy = 1;
+			if (format[ind + 1] == '\0')
+			{
+				if (spec_c)
+				{
+					buff[buff_i++] = format[ind];
+					busy = 0;
+				}
+				else
+					return (-1);
+			}
 		}
 		else if (busy)
 		{
 			E = print_helper(format, &ind, buff, &buff_i, &busy,
-			&beg_ind, flags, &width, &precision, &dot, args);
+			&beg_ind, flags, &width, &precision, &dot, &spec_c, args);
 			if (!E)
 			{
 				free(buff);
@@ -75,19 +86,25 @@ int _printf(const char *format, ...)
  * @width: width pulled from format string
  * @precision: precision pulled from format string
  * @dot: boolean value 0 or 1 representing precision dot found or not
+ * @spec_c: Counter for number of non flag characters encountered during busy.
  * @args: va_list of args to advance and use
  *
  * Return: 1 on success, 0 on failure
  */
 int print_helper(const char *format, unsigned int *f_index, char *buff,
 		unsigned int *b_index, char *busy, unsigned int *beg_index,
-		int *flags, int *width, int *precision, int *dot, va_list args)
+		int *flags, int *width, int *precision, int *dot, int *spec_c,
+		va_list args)
 {
 	char *temp;
 	int flag_index, i = 0;
 
-	if (_isalpha(format[*f_index]) || format[*f_index] == '%'
-		|| format[(*f_index) + 1] == '\0')
+	flag_index = is_flag(format[*f_index]);
+	if (flag_index > -1)
+		flags[flag_index] = 1;
+	else
+		(*spec_c)++;
+	if (_isalpha(format[*f_index]) || format[*f_index] == '%')
 	{
 		if (is_specifier(format[*f_index]))
 		{
@@ -96,7 +113,6 @@ int print_helper(const char *format, unsigned int *f_index, char *buff,
 				return (0);
 			if (temp[0] == '\0' && format[*f_index] == 'c')
 			{
-				/* change all precision to width once fixed */
 				for (i = 0; i < *precision - 1; i++)
 					buff[(*b_index)++] = ' ';
 				buff[(*b_index)++] = '\0';
@@ -125,9 +141,17 @@ int print_helper(const char *format, unsigned int *f_index, char *buff,
 		|| format[*f_index] == '*')
 		get_width_precision(format[*f_index], width,
 					precision, dot, args);
-	flag_index = is_flag(format[*f_index]);
-	if (flag_index > -1)
-		flags[flag_index] = 1;
+	if (format[(*f_index) + 1] == '\0')
+	{
+		if (*spec_c)
+		{
+			*f_index = *beg_index;
+			buff[(*b_index)++] = format[*f_index];
+			*busy = 0;
+		}
+		else
+			return (0);
+	}
 	return (1);
 }
 /**
