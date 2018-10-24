@@ -84,7 +84,7 @@ int print_helper(const char *format, unsigned int *f_index, char *buff,
 		int *flags, int *width, int *precision, int *dot, va_list args)
 {
 	char *temp;
-	int flag_index;
+	int flag_index, i = 0;
 
 	if (_isalpha(format[*f_index]) || format[*f_index] == '%'
 		|| format[(*f_index) + 1] == '\0')
@@ -95,7 +95,14 @@ int print_helper(const char *format, unsigned int *f_index, char *buff,
 			if (!temp)
 				return (0);
 			if (temp[0] == '\0' && format[*f_index] == 'c')
-				buff[(*b_index)++] = temp[0];
+			{
+				/* change all precision to width once fixed */
+				for (i = 0; i < *precision - 1; i++)
+					buff[(*b_index)++] = ' ';
+				buff[(*b_index)++] = '\0';
+				*busy = 0;
+				return (1);
+			}
 			else
 			{
 				temp = perform_flag_funcs(flags, temp,
