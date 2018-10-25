@@ -61,8 +61,9 @@ int _printf(const char *format, ...)
 		}
 		else
 		{
-			help_s->buff[help_s->buff_i++] = format[help_s->f_i];
-			help_s->buff_len++;
+			help_s->c[0] = format[help_s->f_i];
+			help_s->c[1] = '\0';
+			help_s->buff_len += copy_buff(help_s->c, help_s);
 		}
 		help_s->f_i++;
 	}
@@ -72,8 +73,6 @@ int _printf(const char *format, ...)
 		free_all(help_s, args);
 		return (-1);
 	}
-	if (help_s->buff_i > BUFF_SIZE)
-		help_s->buff_i = BUFF_SIZE;
 	print_buff(help_s->buff, help_s->buff_i);
 	t_bytes = help_s->buff_len;
 	free_all(help_s, args);
@@ -173,6 +172,14 @@ printh_t *init_help_s(const char *format)
 	help_s->buff = create_buff(BUFF_SIZE);
 	if (!help_s->buff)
 	{
+		free(help_s->flags);
+		free(help_s);
+		return (NULL);
+	}
+	help_s->c = create_buff(2);
+	if (!help_s->c)
+	{
+		free(help_s->buff);
 		free(help_s->flags);
 		free(help_s);
 		return (NULL);
