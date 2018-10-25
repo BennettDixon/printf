@@ -33,6 +33,7 @@ typedef struct flag_specifier
  * @buff_i: pointer to index of buffer
  * @busy: pointer to printf isbusy
  * @beg_i: pointer to beginning index (where % was found)
+ * @buff_len: Counter for the total amount of characters so far.
  * @flags: pointer to int array pertaining to flag's being used
  * @width: width pulled from format string
  * @precision: precision pulled from format string
@@ -51,6 +52,7 @@ typedef struct print_helper_s
 	unsigned int f_i;
 	unsigned int buff_i;
 	unsigned int beg_i;
+	unsigned int buff_len;
 	int width;
 	int precision;
 	int spec_c;
@@ -60,7 +62,7 @@ typedef struct print_helper_s
 
 int _printf(const char *format, ...);
 char *create_buff(unsigned int bytes);
-void copy_buff(char *str, unsigned int *index, char *buff, unsigned int b_s);
+unsigned int copy_buff(char *str, printh_t *help_s);
 unsigned int print_buff(char *buff, unsigned int buff_size);
 void free_all(printh_t *help_s, va_list args);
 char *(*get_string_func(char ch))(va_list);
