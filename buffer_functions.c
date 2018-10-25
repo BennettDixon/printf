@@ -45,7 +45,8 @@ unsigned int copy_buff(char *str, printh_t *help_s)
 			help_s->buff_i = 0;
 		}
 	}
-	free(str);
+	if (help_s->c != str) /* addresses */
+		free(str);
 	return (i);
 }
 /**
@@ -78,6 +79,8 @@ void free_all(printh_t *help_s, va_list args)
 			free(help_s->flags);
 		if (help_s->buff)
 			free(help_s->buff);
+		if (help_s->c)
+			free(help_s->c);
 		free(help_s);
 	}
 	va_end(args);

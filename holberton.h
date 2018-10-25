@@ -30,6 +30,7 @@ typedef struct flag_specifier
  * @format: pointer to format string
  * @f_i: pointer to index of format string
  * @buff: pointer to buffer
+ * @c: pointer to character string, used by copy buffer
  * @buff_i: pointer to index of buffer
  * @busy: pointer to printf isbusy
  * @beg_i: pointer to beginning index (where % was found)
@@ -45,6 +46,7 @@ typedef struct print_helper_s
 	/* string  values */
 	const char *format;
 	char *buff;
+	char *c;
 	/* boolean values */
 	char dot;
 	char busy;
