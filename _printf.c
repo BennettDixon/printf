@@ -108,7 +108,9 @@ int print_helper(printh_t *help_s, va_list args)
 				for (i = 0; i < help_s->width - 1; i++)
 					help_s->buff[help_s->buff_i++] = ' ';
 				help_s->buff[help_s->buff_i++] = '\0';
-				help_s->buff_len += help_s->width;
+				if (help_s->width)
+					help_s->buff_len += help_s->width - 1;
+				help_s->buff_len++;
 				help_s->busy = 0;
 				return (1);
 			}
