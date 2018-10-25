@@ -13,7 +13,6 @@ printh_t *init_help_s(const char *);
 
 int _printf(const char *format, ...)
 {
-	unsigned int length;
 	int E;
 	va_list args;
 	printh_t *help_s;
@@ -27,7 +26,7 @@ int _printf(const char *format, ...)
 		va_end(args);
 		return (-1);
 	}
-	length = 0, E = 0;
+	E = 0;
 
 	while (format[help_s->f_i])
 	{
@@ -40,6 +39,7 @@ int _printf(const char *format, ...)
 				if (help_s->spec_c)
 				{
 					help_s->buff[help_s->buff_i++] = format[help_s->f_i];
+					help_s->buff_len++;
 					help_s->busy = 0;
 				}
 				else
@@ -59,7 +59,10 @@ int _printf(const char *format, ...)
 			}
 		}
 		else
+		{
 			help_s->buff[help_s->buff_i++] = format[help_s->f_i];
+			help_s->buff_len++;
+		}
 		help_s->f_i++;
 	}
 	if (help_s->busy && format[help_s->f_i] == '\0')
@@ -104,6 +107,7 @@ int print_helper(printh_t *help_s, va_list args)
 				for (i = 0; i < help_s->width - 1; i++)
 					help_s->buff[help_s->buff_i++] = ' ';
 				help_s->buff[help_s->buff_i++] = '\0';
+				help_s->buff_len += help_s->width;
 				help_s->busy = 0;
 				return (1);
 			}
@@ -115,13 +119,16 @@ int print_helper(printh_t *help_s, va_list args)
 			}
 			if (!temp)
 				return (0);
-			copy_buff(temp, &(help_s->buff_i), help_s->buff, BUFF_SIZE);
+			help_s->buff_len += copy_buff(temp, &(help_s->buff_i),
+					help_s->buff, BUFF_SIZE);
+
 			help_s->busy = 0;
 		}
 		else
 		{
 			help_s->f_i = help_s->beg_i;
 			help_s->buff[(help_s->buff_i)++] = help_s->format[help_s->f_i];
+			help_s->buff_len++;
 			help_s->busy = 0;
 		}
 	}
@@ -135,6 +142,7 @@ int print_helper(printh_t *help_s, va_list args)
 		{
 			help_s->f_i = help_s->beg_i;
 			help_s->buff[(help_s->buff_i)++] = help_s->format[help_s->f_i];
+			help_s->buff_len++;
 			help_s->busy = 0;
 		}
 		else
@@ -174,6 +182,7 @@ printh_t *init_help_s(const char *format)
 	help_s->f_i = 0;
 	help_s->buff_i = 0;
 	help_s->beg_i = 0;
+	help_s->buff_len = 0;
 	help_s->width = 0;
 	help_s->precision = 0;
 	help_s->spec_c = 0;
