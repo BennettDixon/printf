@@ -27,13 +27,13 @@ char *create_buff(unsigned int bytes)
  */
 unsigned int copy_buff(char *str, printh_t *help_s)
 {
-	unsigned int i = 0, write_err = 0;
+	unsigned int i = 0;
 
 	if (!str || !help_s->buff)
-		return;
+		return (0);
 	while (str[i] && help_s->buff_i < BUFF_SIZE)
 	{
-		buff[help_s->buff_i] = str[i];
+		help_s->buff[help_s->buff_i] = str[i];
 		help_s->buff_i++, i++;
 		if (help_s->buff_i == BUFF_SIZE)
 		{
