@@ -1,9 +1,9 @@
 #include "holberton.h"
 #include <stdlib.h>
 int print_helper(printh_t *help_s, va_list args);
-void get_width_precision(printh_t *help_s, va_list args);
 char *perform_flag_funcs(int *flags, char *str, char spec);
 printh_t *init_help_s(const char *);
+void exit_busy_reset(printh_t *help_s);
 /**
   * _printf - Prints variatic arguments based on format string.
   * @format: String passed, may contain zero, or more directives.
@@ -41,7 +41,7 @@ int _printf(const char *format, ...)
 				{
 					help_s->buff[help_s->buff_i++] = format[help_s->f_i];
 					help_s->buff_len++;
-					help_s->busy = 0;
+					exit_busy_reset(help_s);
 				}
 				else
 				{
@@ -111,7 +111,7 @@ int print_helper(printh_t *help_s, va_list args)
 				if (help_s->width)
 					help_s->buff_len += help_s->width - 1;
 				help_s->buff_len++;
-				help_s->busy = 0;
+				exit_busy_reset(help_s);
 				return (1);
 			}
 			else
@@ -124,14 +124,14 @@ int print_helper(printh_t *help_s, va_list args)
 				return (0);
 			help_s->buff_len += copy_buff(temp, help_s);
 
-			help_s->busy = 0;
+			exit_busy_reset(help_s);
 		}
 		else
 		{
 			help_s->f_i = help_s->beg_i;
 			help_s->buff[(help_s->buff_i)++] = help_s->format[help_s->f_i];
 			help_s->buff_len++;
-			help_s->busy = 0;
+			exit_busy_reset(help_s);
 		}
 	}
 	else if (_isdigit(help_s->format[help_s->f_i]) ||
@@ -145,7 +145,7 @@ int print_helper(printh_t *help_s, va_list args)
 			help_s->f_i = help_s->beg_i;
 			help_s->buff[(help_s->buff_i)++] = help_s->format[help_s->f_i];
 			help_s->buff_len++;
-			help_s->busy = 0;
+			exit_busy_reset(help_s);
 		}
 		else
 			return (0);
@@ -199,39 +199,6 @@ printh_t *init_help_s(const char *format)
 	return (help_s);
 }
 /**
- * get_width_precision - gets the width and precision for a format string
- * @help_s: pointer to our helper struct to contain variables for passing
- * @args: va_list of args to advance and use
- *
- * Return: always void
- */
-void get_width_precision(printh_t *help_s, va_list args)
-{
-	char c;
-	char dot;
-
-	c = help_s->format[help_s->f_i];
-	dot = help_s->dot;
-
-	if (c == '.')
-		help_s->dot = 1;
-	else if (_isdigit(c))
-	{
-		c -= '0';
-		if (!dot)
-			help_s->width = (c + (help_s->width * 10));
-		else
-			help_s->precision = (c + (help_s->precision * 10));
-	}
-	else if (c == '*')
-	{
-		if (!dot)
-			help_s->width = va_arg(args, int);
-		else
-			help_s->precision = va_arg(args, int);
-	}
-}
-/**
  * perform_flag_funcs - Perform flag functions that were encountered on the
  * string.
  * @flags: An array int to keep track of which flags were encountered. 1 if
@@ -261,3 +228,19 @@ char *perform_flag_funcs(int *flags, char *temp, char spec)
 	}
 	return (temp);
 }
+
+/**
+ * exit_busy_reset - Reset values of busy, width, precision, and dot to zero
+ * upon exit of busy.
+ * @help_s: Pointer to structure.
+ *
+ * Return: Void.
+ */
+
+void exit_busy_reset(printh_t *help_s)
+{
+	help_s->busy = 0;
+	help_s->width = 0;
+	help_s->precision = 0;
+	help_s->dot = 0;
+} 
