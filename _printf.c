@@ -14,6 +14,7 @@ printh_t *init_help_s(const char *);
 int _printf(const char *format, ...)
 {
 	int E;
+	unsigned int t_bytes;
 	va_list args;
 	printh_t *help_s;
 
@@ -73,9 +74,10 @@ int _printf(const char *format, ...)
 	}
 	if (help_s->buff_i > BUFF_SIZE)
 		help_s->buff_i = BUFF_SIZE;
-	length = print_buff(help_s->buff, help_s->buff_i);
+	print_buff(help_s->buff, help_s->buff_i);
+	t_bytes = help_s->buff_len;
 	free_all(help_s, args);
-	return (length);
+	return (t_bytes);
 }
 /**
  * print_helper - print helper function to split up logic of _printf
@@ -119,8 +121,7 @@ int print_helper(printh_t *help_s, va_list args)
 			}
 			if (!temp)
 				return (0);
-			help_s->buff_len += copy_buff(temp, &(help_s->buff_i),
-					help_s->buff, BUFF_SIZE);
+			help_s->buff_len += copy_buff(temp, help_s);
 
 			help_s->busy = 0;
 		}

@@ -62,7 +62,7 @@ typedef struct print_helper_s
 
 int _printf(const char *format, ...);
 char *create_buff(unsigned int bytes);
-unsigned int copy_buff(char *str, printh_t *help_s, unsigned int b_s);
+unsigned int copy_buff(char *str, printh_t *help_s);
 unsigned int print_buff(char *buff, unsigned int buff_size);
 void free_all(printh_t *help_s, va_list args);
 char *(*get_string_func(char ch))(va_list);
