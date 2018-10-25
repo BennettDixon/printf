@@ -90,6 +90,7 @@ char *do_octal_flag(char *str);
 char *do_hex_flag(char *str);
 char *do_hex_upper_flag(char *str);
 char *do_width(char *str, int width, int space);
+char *do_precision(char *str, int precision, char spec);
 int ch_in_array(char c, char *ptr);
 int is_specifier(char c);
 int is_flag(char c);
