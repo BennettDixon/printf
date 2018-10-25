@@ -3,6 +3,7 @@
 int print_helper(printh_t *help_s, va_list args);
 char *perform_flag_funcs(int *flags, char *str, char spec);
 printh_t *init_help_s(const char *);
+void exit_busy_reset(printh_t *help_s);
 /**
   * _printf - Prints variatic arguments based on format string.
   * @format: String passed, may contain zero, or more directives.
@@ -40,7 +41,7 @@ int _printf(const char *format, ...)
 				{
 					help_s->buff[help_s->buff_i++] = format[help_s->f_i];
 					help_s->buff_len++;
-					help_s->busy = 0;
+					exit_busy_reset(help_s);
 				}
 				else
 				{
@@ -110,7 +111,7 @@ int print_helper(printh_t *help_s, va_list args)
 				if (help_s->width)
 					help_s->buff_len += help_s->width - 1;
 				help_s->buff_len++;
-				help_s->busy = 0;
+				exit_busy_reset(help_s);
 				return (1);
 			}
 			else
@@ -123,14 +124,14 @@ int print_helper(printh_t *help_s, va_list args)
 				return (0);
 			help_s->buff_len += copy_buff(temp, help_s);
 
-			help_s->busy = 0;
+			exit_busy_reset(help_s);
 		}
 		else
 		{
 			help_s->f_i = help_s->beg_i;
 			help_s->buff[(help_s->buff_i)++] = help_s->format[help_s->f_i];
 			help_s->buff_len++;
-			help_s->busy = 0;
+			exit_busy_reset(help_s);
 		}
 	}
 	else if (_isdigit(help_s->format[help_s->f_i]) ||
@@ -144,7 +145,7 @@ int print_helper(printh_t *help_s, va_list args)
 			help_s->f_i = help_s->beg_i;
 			help_s->buff[(help_s->buff_i)++] = help_s->format[help_s->f_i];
 			help_s->buff_len++;
-			help_s->busy = 0;
+			exit_busy_reset(help_s);
 		}
 		else
 			return (0);
@@ -227,3 +228,19 @@ char *perform_flag_funcs(int *flags, char *temp, char spec)
 	}
 	return (temp);
 }
+
+/**
+ * exit_busy_reset - Reset values of busy, width, precision, and dot to zero
+ * upon exit of busy.
+ * @help_s: Pointer to structure.
+ *
+ * Return: Void.
+ */
+
+void exit_busy_reset(printh_t *help_s)
+{
+	help_s->busy = 0;
+	help_s->width = 0;
+	help_s->precision = 0;
+	help_s->dot = 0;
+} 

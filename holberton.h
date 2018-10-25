@@ -67,7 +67,6 @@ char *create_buff(unsigned int bytes);
 unsigned int copy_buff(char *str, printh_t *help_s);
 unsigned int print_buff(char *buff, unsigned int buff_size);
 void free_all(printh_t *help_s, va_list args);
-void exit_busy_reset(printh_t *help_s);
 void get_width_precision(printh_t *help_s, va_list args);
 char *(*get_string_func(char ch))(va_list);
 char *(*get_flag_func(int flag_index, char spec))(char *);
