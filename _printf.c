@@ -116,9 +116,13 @@ int print_helper(printh_t *help_s, va_list args)
 			}
 			else
 			{
-				temp = perform_flag_funcs(help_s->flags, temp,
+				if (help_s->dot)
+					temp = do_precision(temp,
+							help_s->precision,
 						help_s->format[help_s->f_i]);
 				temp = do_width(temp, help_s->width, 1);
+				temp = perform_flag_funcs(help_s->flags, temp,
+						help_s->format[help_s->f_i]);
 			}
 			if (!temp)
 				return (0);
@@ -243,4 +247,4 @@ void exit_busy_reset(printh_t *help_s)
 	help_s->width = 0;
 	help_s->precision = 0;
 	help_s->dot = 0;
-} 
+}
