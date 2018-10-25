@@ -57,7 +57,7 @@ char *do_width(char *str, int width, int space)
 	if (len > width)
 		return (str);
 
-	ret = malloc(len + 1);
+	ret = malloc(width + 1);
 	if (!ret)
 		return (NULL);
 
