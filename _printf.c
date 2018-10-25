@@ -1,7 +1,6 @@
 #include "holberton.h"
 #include <stdlib.h>
 int print_helper(printh_t *help_s, va_list args);
-void get_width_precision(printh_t *help_s, va_list args);
 char *perform_flag_funcs(int *flags, char *str, char spec);
 printh_t *init_help_s(const char *);
 /**
@@ -197,39 +196,6 @@ printh_t *init_help_s(const char *format)
 	help_s->precision = 0;
 	help_s->spec_c = 0;
 	return (help_s);
-}
-/**
- * get_width_precision - gets the width and precision for a format string
- * @help_s: pointer to our helper struct to contain variables for passing
- * @args: va_list of args to advance and use
- *
- * Return: always void
- */
-void get_width_precision(printh_t *help_s, va_list args)
-{
-	char c;
-	char dot;
-
-	c = help_s->format[help_s->f_i];
-	dot = help_s->dot;
-
-	if (c == '.')
-		help_s->dot = 1;
-	else if (_isdigit(c))
-	{
-		c -= '0';
-		if (!dot)
-			help_s->width = (c + (help_s->width * 10));
-		else
-			help_s->precision = (c + (help_s->precision * 10));
-	}
-	else if (c == '*')
-	{
-		if (!dot)
-			help_s->width = va_arg(args, int);
-		else
-			help_s->precision = va_arg(args, int);
-	}
 }
 /**
  * perform_flag_funcs - Perform flag functions that were encountered on the
