@@ -1,6 +1,5 @@
 #include "holberton.h"
 #include <stdlib.h>
-
 /**
  * get_char - gets a pointer to an array containing char and null byte
  * @args: va_list to get argument from of type char

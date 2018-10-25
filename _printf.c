@@ -13,8 +13,8 @@ printh_t *init_help_s(const char *);
 
 int _printf(const char *format, ...)
 {
-	unsigned int length;
 	int E;
+	unsigned int t_bytes;
 	va_list args;
 	printh_t *help_s;
 
@@ -27,7 +27,7 @@ int _printf(const char *format, ...)
 		va_end(args);
 		return (-1);
 	}
-	length = 0, E = 0;
+	E = 0;
 
 	while (format[help_s->f_i])
 	{
@@ -40,6 +40,7 @@ int _printf(const char *format, ...)
 				if (help_s->spec_c)
 				{
 					help_s->buff[help_s->buff_i++] = format[help_s->f_i];
+					help_s->buff_len++;
 					help_s->busy = 0;
 				}
 				else
@@ -59,7 +60,11 @@ int _printf(const char *format, ...)
 			}
 		}
 		else
-			help_s->buff[help_s->buff_i++] = format[help_s->f_i];
+		{
+			help_s->c[0] = format[help_s->f_i];
+			help_s->c[1] = '\0';
+			help_s->buff_len += copy_buff(help_s->c, help_s);
+		}
 		help_s->f_i++;
 	}
 	if (help_s->busy && format[help_s->f_i] == '\0')
@@ -68,11 +73,10 @@ int _printf(const char *format, ...)
 		free_all(help_s, args);
 		return (-1);
 	}
-	if (help_s->buff_i > BUFF_SIZE)
-		help_s->buff_i = BUFF_SIZE;
-	length = print_buff(help_s->buff, help_s->buff_i);
+	print_buff(help_s->buff, help_s->buff_i);
+	t_bytes = help_s->buff_len;
 	free_all(help_s, args);
-	return (length);
+	return (t_bytes);
 }
 /**
  * print_helper - print helper function to split up logic of _printf
@@ -104,6 +108,9 @@ int print_helper(printh_t *help_s, va_list args)
 				for (i = 0; i < help_s->width - 1; i++)
 					help_s->buff[help_s->buff_i++] = ' ';
 				help_s->buff[help_s->buff_i++] = '\0';
+				if (help_s->width)
+					help_s->buff_len += help_s->width - 1;
+				help_s->buff_len++;
 				help_s->busy = 0;
 				return (1);
 			}
@@ -115,13 +122,15 @@ int print_helper(printh_t *help_s, va_list args)
 			}
 			if (!temp)
 				return (0);
-			copy_buff(temp, &(help_s->buff_i), help_s->buff, BUFF_SIZE);
+			help_s->buff_len += copy_buff(temp, help_s);
+
 			help_s->busy = 0;
 		}
 		else
 		{
 			help_s->f_i = help_s->beg_i;
 			help_s->buff[(help_s->buff_i)++] = help_s->format[help_s->f_i];
+			help_s->buff_len++;
 			help_s->busy = 0;
 		}
 	}
@@ -135,6 +144,7 @@ int print_helper(printh_t *help_s, va_list args)
 		{
 			help_s->f_i = help_s->beg_i;
 			help_s->buff[(help_s->buff_i)++] = help_s->format[help_s->f_i];
+			help_s->buff_len++;
 			help_s->busy = 0;
 		}
 		else
@@ -168,12 +178,21 @@ printh_t *init_help_s(const char *format)
 		free(help_s);
 		return (NULL);
 	}
+	help_s->c = create_buff(2);
+	if (!help_s->c)
+	{
+		free(help_s->buff);
+		free(help_s->flags);
+		free(help_s);
+		return (NULL);
+	}
 	help_s->format = format;
 	help_s->dot = 0;
 	help_s->busy = 0;
 	help_s->f_i = 0;
 	help_s->buff_i = 0;
 	help_s->beg_i = 0;
+	help_s->buff_len = 0;
 	help_s->width = 0;
 	help_s->precision = 0;
 	help_s->spec_c = 0;
