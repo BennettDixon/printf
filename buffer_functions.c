@@ -20,26 +20,33 @@ char *create_buff(unsigned int bytes)
 }
 /**
  * copy_buff - copies a string into the buffer
- * @str: string to copy into buffer, null terminated
- * @index: pointer to current buffer index
- * @buff: pointer to buffer
- * @buff_size: size of buffer, needed for overflow
+ * @str: string to copy into buffer
+ * @help_s: pointer to printh_t struct containing buffer, buff_i, etc..
  *
- * Return: always void
+ * Return: number of bytes written
  */
-void copy_buff(char *str, unsigned int *index, char *buff,
-		unsigned int buff_size)
+unsigned int copy_buff(char *str, printh_t *help_s)
 {
-	unsigned int i = 0;
+	unsigned int i = 0, write_err = 0;
 
-	if (!str || !buff)
+	if (!str || !help_s->buff)
 		return;
-	while (str[i] && *index < buff_size)
+	while (str[i] && help_s->buff_i < BUFF_SIZE)
 	{
-		buff[*index] = str[i];
-		(*index)++, i++;
+		buff[help_s->buff_i] = str[i];
+		help_s->buff_i++, i++;
+		if (help_s->buff_i == BUFF_SIZE)
+		{
+			print_buff(help_s->buff, BUFF_SIZE);
+			free(help_s->buff);
+			help_s->buff = create_buff(BUFF_SIZE);
+			if (!help_s->buff)
+				return (i);
+			help_s->buff_i = 0;
+		}
 	}
 	free(str);
+	return (i);
 }
 /**
  * print_buff - prints the contents of the buffer
