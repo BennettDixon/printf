@@ -39,8 +39,12 @@ char *do_precision(char *str, int prec, char spec)
 		}
 		else if (str[0] == '0' && len == 1)
 		{
-			str[0] = '\0';
-			return (str);
+			if (prec == 0)
+			{
+				str[0] = '\0';
+				return (str);
+			}
+			ret = do_width(str, prec, 0);
 		}
 		else
 			ret = do_width(str, prec, 0);
