@@ -94,6 +94,7 @@ char *do_width(char *str, int width, int space);
 char *do_precision(char *str, int precision, char spec);
 char *get_hex_n(unsigned int);
 char *get_hex_long_n(unsigned long int);
+char *do_shift(char *str, int width);
 int ch_in_array(char c, char *ptr);
 int is_specifier(char c);
 int is_flag(char c, char prev_c);
