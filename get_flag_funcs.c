@@ -13,7 +13,7 @@ char *(*get_flag_func(int flag_index, char spec))(char *)
 	char only_ints[] = {'d', 'i', 'p', '\0' };
 	char only_hex[] = {'o', 'x', 'X', '\0' };
 	char all[] = { 'o', 'x', 'X', 'd', 'i', 'p', '\0' };
-	flag_t flags[5];
+	flag_t flags[6];
 
 	flags[0].flag = '+';
 	flags[0].specs = only_ints;
@@ -24,12 +24,15 @@ char *(*get_flag_func(int flag_index, char spec))(char *)
 	flags[2].flag = '#';
 	flags[2].specs = only_hex;
 	flags[2].f = NULL;
-	flags[3].flag = '0';
+	flags[3].flag = '-';
 	flags[3].specs = all;
 	flags[3].f = NULL;
-	flags[4].flag = 0;
-	flags[4].specs = NULL;
+	flags[4].flag = '0';
+	flags[4].specs = all;
 	flags[4].f = NULL;
+	flags[5].flag = 0;
+	flags[5].specs = NULL;
+	flags[5].f = NULL;
 	switch (spec)
 	{
 		case ('o'):

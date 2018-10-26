@@ -1,6 +1,5 @@
 #include "holberton.h"
 #include <stdlib.h>
-#include <stdio.h>
 /**
  * get_width_precision - gets the width and precision for a format string
  * @help_s: pointer to our helper struct to contain variables for passing
@@ -48,10 +47,9 @@ void get_width_precision(printh_t *help_s, va_list args)
 
 char *do_width(char *str, int width, int zero)
 {
-	int len;
-	int i, j, stop;
+	int len, i, j, stop;
 	char *ret;
-	char pad;
+	char pad, sign;
 
 	stop = 0;
 	len = _strlen(str);
@@ -63,14 +61,10 @@ char *do_width(char *str, int width, int zero)
 	if (zero)
 	{
 		pad = '0';
-		if (str[0] == '+')
+		sign = str[0];
+		if (str[0] == '+' || str[0] == '-')
 		{
-			ret[0] = '+';
-			stop = 1;
-		}
-		if (str[0] == '-')
-		{
-			ret[0] = '-';
+			ret[0] = sign;
 			stop = 1;
 		}
 		if (str[0] == '0' && str[1] == 'x')
@@ -82,7 +76,6 @@ char *do_width(char *str, int width, int zero)
 	}
 	else
 	{
-		printf("use spaces\n");
 		pad = ' ';
 	}
 	i = width;
@@ -92,6 +85,35 @@ char *do_width(char *str, int width, int zero)
 
 	while (i >= stop)
 		ret[i--] = pad;
+	free(str);
+	return (ret);
+}
+
+/**
+ * do_shift - Takes a string and if its' length is less than width, add n
+ * spaces after the string, where n is the difference between length and width.
+ * @str: Pointer to the passed string.
+ * @width: Minimum number of characters to be printed. if len < width, pad
+ * the end of the string with spaces using the difference.
+ *
+ * Return: The left justified string.
+ */
+char *do_shift(char *str, int width)
+{
+	int len, i;
+	char *ret;
+
+	len = _strlen(str);
+	if (len > width)
+		return (str);
+	ret = malloc(width + 1);
+	if (!ret)
+		return (NULL);
+	for (i = 0; str[i]; i++)
+		ret[i] = str[i];
+	for (; i < width; i++)
+		ret[i] = ' ';
+	ret[i] = '\0';
 	free(str);
 	return (ret);
 }

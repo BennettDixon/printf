@@ -81,6 +81,8 @@ void free_all(printh_t *help_s, va_list args)
 			free(help_s->buff);
 		if (help_s->c)
 			free(help_s->c);
+		if (help_s->mods)
+			free(help_s->mods);
 		free(help_s);
 	}
 	va_end(args);
