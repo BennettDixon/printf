@@ -1,6 +1,5 @@
 #include "holberton.h"
 #include <stdlib.h>
-#include <stdio.h>
 unsigned int _abs(int);
 /**
  * get_int - gets a character pointer to new string containing int
@@ -20,11 +19,8 @@ char *get_int(va_list args, char *mods)
 	if (mods[0] > 0 && mods[1] == 0) /* l byte is lit, h is not */
 	{
 		num_l = va_arg(args, long int);
-		printf("pulled num: %ld\n", num_l);
 		if (num_l < 0)
-		{
 			temp_l = -(unsigned long int)num_l;
-		}
 		else
 			temp_l = (unsigned long int)num_l;
 		length = get_longnumbase_len(temp_l, 10);
