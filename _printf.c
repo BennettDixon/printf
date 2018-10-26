@@ -123,13 +123,13 @@ int print_helper(printh_t *help_s, va_list args)
 						help_s->format[help_s->f_i]);
 				if (help_s->format[help_s->f_i] == 'p')
 					temp = do_hex_flag(temp);
+				temp = perform_flag_funcs(help_s->flags, temp,
+						help_s->format[help_s->f_i]);
 				if (help_s->flags[3] && help_s->format[help_s->f_i] != 's'
 						&& help_s->format[help_s->f_i] != 'c')
 					temp = do_width(temp, help_s->width, 1);
 				else
 					temp = do_width(temp, help_s->width, 0);
-				temp = perform_flag_funcs(help_s->flags, temp,
-						help_s->format[help_s->f_i]);
 			}
 			if (!temp)
 				return (0);
@@ -251,7 +251,6 @@ char *perform_flag_funcs(int *flags, char *temp, char spec)
 		if (flags[i])
 		{
 			f = get_flag_func(i, spec);
-			flags[i] = 0;
 			if (f)
 				temp = f(temp);
 			if (!temp)
@@ -271,8 +270,13 @@ char *perform_flag_funcs(int *flags, char *temp, char spec)
 
 void exit_busy_reset(printh_t *help_s)
 {
+	int i;
+
 	help_s->busy = 0;
 	help_s->width = 0;
 	help_s->precision = 0;
 	help_s->dot = 0;
+
+	for (i = 0; i < 4; i++)
+		help_s->flags[i] = 0;
 }

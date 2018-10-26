@@ -1,6 +1,6 @@
 #include "holberton.h"
 #include <stdlib.h>
-
+#include <stdio.h>
 /**
  * get_width_precision - gets the width and precision for a format string
  * @help_s: pointer to our helper struct to contain variables for passing
@@ -63,6 +63,11 @@ char *do_width(char *str, int width, int zero)
 	if (zero)
 	{
 		pad = '0';
+		if (str[0] == '+')
+		{
+			ret[0] = '+';
+			stop = 1;
+		}
 		if (str[0] == '-')
 		{
 			ret[0] = '-';
@@ -77,6 +82,7 @@ char *do_width(char *str, int width, int zero)
 	}
 	else
 	{
+		printf("use spaces\n");
 		pad = ' ';
 	}
 	i = width;
