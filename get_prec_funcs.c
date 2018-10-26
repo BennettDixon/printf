@@ -16,7 +16,7 @@ char *do_precision(char *str, int prec, char spec)
 {
 	char *ret;
 	int len, i;
-	char int_array[] = {'i', 'd', 'o', 'u', 'x', 'X', 0};
+	char int_array[] = {'i', 'd', 'o', 'u', 'x', 'X', 'p', 0};
 
 	len = _strlen(str);
 	if (ch_in_array(spec, int_array))
