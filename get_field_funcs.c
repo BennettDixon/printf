@@ -41,12 +41,12 @@ void get_width_precision(printh_t *help_s, va_list args)
  * less than the specified minimum width.
  * @str: The string to modify.
  * @width: The minimum width the string should have.
- * @space: if 0, pad with 0's, pad with space if 1.
+ * @zero: if 1, pad with 0's, otherwise pad with space.
  *
  * Return: char pointer to the new string.
  */
 
-char *do_width(char *str, int width, int space)
+char *do_width(char *str, int width, int zero)
 {
 	int len;
 	int i, j;
@@ -67,10 +67,10 @@ char *do_width(char *str, int width, int space)
 	while (j >= 0)
 		ret[i--] = str[j--];
 
-	if (space)
-		pad = ' ';
-	else
+	if (zero)
 		pad = '0';
+	else
+		pad = ' ';
 
 	while (i >= 0)
 		ret[i--] = pad;

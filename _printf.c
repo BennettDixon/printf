@@ -90,7 +90,8 @@ int print_helper(printh_t *help_s, va_list args)
 	char *temp;
 	int flag_index, i = 0;
 
-	flag_index = is_flag(help_s->format[help_s->f_i]);
+	flag_index = is_flag(help_s->format[help_s->f_i],
+			help_s->format[help_s->f_i - 1]);
 	if (flag_index > -1)
 		help_s->flags[flag_index] = 1;
 	else
@@ -120,7 +121,11 @@ int print_helper(printh_t *help_s, va_list args)
 					temp = do_precision(temp,
 							help_s->precision,
 						help_s->format[help_s->f_i]);
-				temp = do_width(temp, help_s->width, 1);
+				if (help_s->flags[3] && help_s->format[help_s->f_i] != 's'
+						&& help_s->format[help_s->f_i] != 'c')
+					temp = do_width(temp, help_s->width, 1);
+				else
+					temp = do_width(temp, help_s->width, 0);
 				temp = perform_flag_funcs(help_s->flags, temp,
 						help_s->format[help_s->f_i]);
 			}
@@ -169,7 +174,7 @@ printh_t *init_help_s(const char *format)
 	help_s = malloc(sizeof(*help_s));
 	if (!help_s)
 		return (NULL);
-	help_s->flags = calloc(3, sizeof(int));
+	help_s->flags = calloc(4, sizeof(int));
 	if (!help_s->flags)
 	{
 		free(help_s);
@@ -218,7 +223,7 @@ char *perform_flag_funcs(int *flags, char *temp, char spec)
 	int i;
 	char *(*f)(char *);
 
-	for (i = 0; i < 3; i++)
+	for (i = 0; i < 4; i++)
 	{
 		if (flags[i])
 		{
