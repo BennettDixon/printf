@@ -26,7 +26,7 @@ char *(*get_flag_func(int flag_index, char spec))(char *)
 	flags[2].f = NULL;
 	flags[3].flag = '0';
 	flags[3].specs = all;
-	flags[3].f = do_zero_flag;
+	flags[3].f = NULL;
 	flags[4].flag = 0;
 	flags[4].specs = NULL;
 	flags[4].f = NULL;
