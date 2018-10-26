@@ -60,30 +60,30 @@ char *do_width(char *str, int width, int zero)
 	ret = malloc(width + 1);
 	if (!ret)
 		return (NULL);
-
+	if (zero)
+	{
+		pad = '0';
+		if (str[0] == '-')
+		{
+			ret[0] = '-';
+			stop = 1;
+		}
+		if (str[0] == '0' && str[1] == 'x')
+		{
+			ret[0] = '0';
+			ret[1] = 'x';
+			stop = 2;
+		}
+	}
+	else
+	{
+		pad = ' ';
+	}
 	i = width;
 	j = len;
-	while (j >= 0)
+	while (j >= stop)
 		ret[i--] = str[j--];
 
-	if (zero)
-		pad = '0';
-	else
-		pad = ' ';
-	if (str[0] == '-' && zero)
-	{
-		ret[i + 1] = pad;
-		ret[0] = '-';
-		stop = 1;
-	}
-	if (str[0] == '0' && str[1] == 'x' && zero)
-	{
-		ret[i + 1] = pad;
-		ret[i + 2] = pad;
-		ret[0] = '0';
-		ret[1] = 'x';
-		stop = 2;
-	}
 	while (i >= stop)
 		ret[i--] = pad;
 	free(str);
