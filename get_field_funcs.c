@@ -57,14 +57,12 @@ char *do_width(char *str, int width, int zero)
 	len = _strlen(str);
 	if (len > width)
 		return (str);
-
 	ret = malloc(width + 1);
 	if (!ret)
 		return (NULL);
 
 	i = width;
 	j = len;
-
 	while (j >= 0)
 		ret[i--] = str[j--];
 
@@ -72,14 +70,13 @@ char *do_width(char *str, int width, int zero)
 		pad = '0';
 	else
 		pad = ' ';
-	/* Only want to move the '-' if pad is 0 */
 	if (str[0] == '-' && zero)
 	{
 		ret[i + 1] = pad;
 		ret[0] = '-';
 		stop = 1;
 	}
-	if (str[0] == '0' && str[1] =='x' && zero)
+	if (str[0] == '0' && str[1] == 'x' && zero)
 	{
 		ret[i + 1] = pad;
 		ret[i + 2] = pad;
