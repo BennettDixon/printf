@@ -11,7 +11,7 @@
 typedef struct type_specifier
 {
 	char t;
-	char *(*f)(va_list);
+	char *(*f)(va_list args, char *mods);
 } spec_t;
 /**
  * struct flag_specifier - contains a flag and it's valid specifiers and func
@@ -58,8 +58,9 @@ typedef struct print_helper_s
 	int width;
 	int precision;
 	int spec_c;
-	/* flags is a pointer to an array of booleans */
+	/* flags & mods are pointers to arrays of booleans */
 	int *flags;
+	char *mods;
 } printh_t;
 
 int _printf(const char *format, ...);
@@ -68,22 +69,22 @@ unsigned int copy_buff(char *str, printh_t *help_s);
 unsigned int print_buff(char *buff, unsigned int buff_size);
 void free_all(printh_t *help_s, va_list args);
 void get_width_precision(printh_t *help_s, va_list args);
-char *(*get_string_func(char ch))(va_list);
+char *(*get_string_func(char ch))(va_list, char *modifiers);
 char *(*get_flag_func(int flag_index, char spec))(char *);
-char *get_char(va_list);
-char *get_string(va_list);
-char *get_nonprint_string(va_list);
-char *get_percent(va_list);
-char *get_int(va_list);
-char *get_binary(va_list);
-char *get_unsigned(va_list);
-char *get_octal(va_list);
+char *get_char(va_list, char *mods);
+char *get_string(va_list, char *mods);
+char *get_nonprint_string(va_list, char *mods);
+char *get_percent(va_list, char *mods);
+char *get_int(va_list, char *mods);
+char *get_binary(va_list, char *mods);
+char *get_unsigned(va_list, char *mods);
+char *get_octal(va_list, char *mods);
 char *get_hex_n(unsigned int);
-char *get_hex(va_list);
-char *get_hex_upper(va_list);
-char *get_pointer(va_list);
-char *get_reverse(va_list);
-char *get_rot(va_list);
+char *get_hex(va_list, char *mods);
+char *get_hex_upper(va_list, char *mods);
+char *get_pointer(va_list, char *mods);
+char *get_reverse(va_list, char *mods);
+char *get_rot(va_list, char *mods);
 char *do_plus_flag(char *str);
 char *do_spc_flag(char *str);
 char *do_octal_flag(char *str);
@@ -94,6 +95,7 @@ char *do_precision(char *str, int precision, char spec);
 int ch_in_array(char c, char *ptr);
 int is_specifier(char c);
 int is_flag(char c, char prev_c);
+int is_modifier(char c);
 int _isalpha(char c);
 int _isdigit(char c);
 int is_printable(char c);

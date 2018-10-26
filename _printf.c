@@ -94,14 +94,14 @@ int print_helper(printh_t *help_s, va_list args)
 			help_s->format[help_s->f_i - 1]);
 	if (flag_index > -1)
 		help_s->flags[flag_index] = 1;
-	else
+	else if (!is_modifier(help_s->format[help_s->f_i]))
 		(help_s->spec_c)++;
 	if (_isalpha(help_s->format[help_s->f_i])
 		|| help_s->format[help_s->f_i] == '%')
 	{
 		if (is_specifier(help_s->format[help_s->f_i]))
 		{
-			temp = get_string_func(help_s->format[help_s->f_i])(args);
+			temp = get_string_func(help_s->format[help_s->f_i])(args, help_s->mods);
 			if (!temp)
 				return (0);
 			if (temp[0] == '\0' && help_s->format[help_s->f_i] == 'c')
@@ -134,6 +134,20 @@ int print_helper(printh_t *help_s, va_list args)
 			help_s->buff_len += copy_buff(temp, help_s);
 
 			exit_busy_reset(help_s);
+		}
+		else if (is_modifier(help_s->format[help_s->f_i]))
+		{
+			switch (help_s->format[help_s->f_i])
+			{
+				case ('l'):
+					help_s->mods[0] = 1;
+					break;
+				case ('h'):
+					help_s->mods[1] = 1;
+					break;
+				default:
+					break;
+			}
 		}
 		else
 		{
@@ -177,6 +191,13 @@ printh_t *init_help_s(const char *format)
 	help_s->flags = calloc(4, sizeof(int));
 	if (!help_s->flags)
 	{
+		free(help_s);
+		return (NULL);
+	}
+	help_s->mods = calloc(2, sizeof(char));
+	if (!help_s->mods)
+	{
+		free(help_s->flags);
 		free(help_s);
 		return (NULL);
 	}

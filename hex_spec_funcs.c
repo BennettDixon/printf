@@ -23,28 +23,35 @@ char *get_hex_n(unsigned int num)
 /**
  * get_hex - gets a string that is the hex representation of an integer
  * @args: va_list to get integer for conversion from
+ * @mods: array containing length modifier bytes, representing t/f for l & h
  *
  * Return: char pointer to new hex string
  */
-char *get_hex(va_list args)
+char *get_hex(va_list args, char *mods)
 {
 	unsigned int num;
 
-	num = va_arg(args, unsigned int);
+	if (mods[0] > 0 && mods[1] == 0) /* l byte is lit, h is not */
+		num = va_arg(args, unsigned long int);
+	else if (mods[1] > 0 && mods[0] == 0) /* h byte lit, l is not */
+		num = va_arg(args, int);
+	else /* both are lit (cancels out), or no length mods are lit */
+		num = va_arg(args, unsigned int);
 
 	return (get_hex_n(num));
 }
 /**
  * get_hex_upper - gets a string that is the upper case hex rep of an integer
  * @args: va_list to get integer for conversion from
+ * @mods: array containing length modifier bytes, representing t/f for l & h
  *
  * Return: char pointer to new hex string
  */
-char *get_hex_upper(va_list args)
+char *get_hex_upper(va_list args, char *mods)
 {
 	char *ret;
 
-	ret = get_hex(args);
+	ret = get_hex(args, mods);
 	_string_upper(ret);
 
 	return (ret);
@@ -52,15 +59,17 @@ char *get_hex_upper(va_list args)
 /**
  * get_pointer - gets a string that contains an address in hexadecimals.
  * @args: va_list to get hexadecimal from.
+ * @mods: length modifiers, voided, not used with this specifier
  *
  * Return: char pointer to the string. NULL if malloc fails.
  */
-char *get_pointer(va_list args)
+char *get_pointer(va_list args, char *mods)
 {
 	int length, i;
 	unsigned long int addr, temp, rem;
 	char *ret;
 
+	(void)mods;
 	addr = va_arg(args, unsigned long int);
 	length = 1;
 	temp = addr;
