@@ -23,3 +23,13 @@ int is_modifier(char c)
 		return (1);
 	return (0);
 }
+/**
+ * _abs - gets absolute value of integer
+ * @n: integer to get absolute value for
+ *
+ * Return: unsigned int containing abs
+ */
+unsigned int _abs(int n)
+{
+	return ((n < 0) ? -(unsigned int)n : (unsigned int)n);
+}
