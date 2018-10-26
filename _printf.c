@@ -113,6 +113,7 @@ int print_helper(printh_t *help_s, va_list args)
 					help_s->buff_len += help_s->width - 1;
 				help_s->buff_len++;
 				exit_busy_reset(help_s);
+				free(temp);
 				return (1);
 			}
 			else
@@ -208,6 +209,7 @@ printh_t *init_help_s(const char *format)
 	help_s->buff = create_buff(BUFF_SIZE);
 	if (!help_s->buff)
 	{
+		free(help_s->mods);
 		free(help_s->flags);
 		free(help_s);
 		return (NULL);
@@ -216,6 +218,7 @@ printh_t *init_help_s(const char *format)
 	if (!help_s->c)
 	{
 		free(help_s->buff);
+		free(help_s->mods);
 		free(help_s->flags);
 		free(help_s);
 		return (NULL);
