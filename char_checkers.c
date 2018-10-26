@@ -25,7 +25,7 @@ int is_specifier(char c)
 
 int is_flag(char c, char prev_c)
 {
-	char flags[] = { '+', ' ', '#', '0', NULL };
+	char flags[] = { '+', ' ', '#',  '-', '0', NULL };
 	int i = 0;
 
 	while (flags[i])
