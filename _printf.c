@@ -94,7 +94,7 @@ int print_helper(printh_t *help_s, va_list args)
 			help_s->format[help_s->f_i - 1]);
 	if (flag_index > -1)
 		help_s->flags[flag_index] = 1;
-	else
+	else if (!is_modifier(help_s->format[help_s->f_i]))
 		(help_s->spec_c)++;
 	if (_isalpha(help_s->format[help_s->f_i])
 		|| help_s->format[help_s->f_i] == '%')
@@ -135,7 +135,7 @@ int print_helper(printh_t *help_s, va_list args)
 
 			exit_busy_reset(help_s);
 		}
-		else if (help_s->format[help_s->f_i] == 'l' || help_s->format[help_s->f_i == 'h'])
+		else if (is_modifier(help_s->format[help_s->f_i]))
 		{
 			switch (help_s->format[help_s->f_i])
 			{
