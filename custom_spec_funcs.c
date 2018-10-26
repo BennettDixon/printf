@@ -4,16 +4,18 @@
 /**
  * get_reverse - Get the reversed copy of the string.
  * @args: va_list containing the string.
+ * @mods: length modifiers, voided, not used with this specifier
  *
  * Return: char pointer to the reversed string.
  */
 
-char *get_reverse(va_list args)
+char *get_reverse(va_list args, char *mods)
 {
 	int i;
 	int length;
 	char *str, *ret;
 
+	(void)mods;
 	str = va_arg(args, char *);
 	length = _strlen(str);
 	ret = malloc(length + 1);
@@ -30,16 +32,18 @@ char *get_reverse(va_list args)
 /**
  * get_rot - Gets the Rot13'd copy of the string
  * @args: va_list containing the string
+ * @mods: length modifiers, voided, not used with this specifier
  *
  * Return: char pointer to newly allocated and rot13'd string
  */
-char *get_rot(va_list args)
+char *get_rot(va_list args, char *mods)
 {
 	int index, length;
 	unsigned char temp_c;
 	char is_upper;
 	char *str, *ret;
 
+	(void)mods;
 	str = va_arg(args, char *);
 	length = _strlen(str);
 	ret = malloc(length + 1);
