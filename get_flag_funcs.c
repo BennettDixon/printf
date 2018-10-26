@@ -13,7 +13,7 @@ char *(*get_flag_func(int flag_index, char spec))(char *)
 	char only_ints[] = {'d', 'i', 'p', '\0' };
 	char only_hex[] = {'o', 'x', 'X', '\0' };
 	char all[] = { 'o', 'x', 'X', 'd', 'i', 'p', '\0' };
-	flag_t flags[4];
+	flag_t flags[5];
 
 	flags[0].flag = '+';
 	flags[0].specs = only_ints;
