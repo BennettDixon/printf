@@ -36,6 +36,7 @@ typedef struct flag_specifier
  * @beg_i: pointer to beginning index (where % was found)
  * @buff_len: Counter for the total amount of characters so far.
  * @flags: pointer to int array pertaining to flag's being used
+ * @mods: pointer to char array pertaining to modifiers being used (l and h)
  * @width: width pulled from format string
  * @precision: precision pulled from format string
  * @dot: boolean value 0 or 1 representing precision dot found or not
@@ -104,5 +105,7 @@ void _string_upper(char *str);
 char *_strcpy(char *dest, char *src);
 int fill_nonprint_buffer(int length, char *buff, char *str);
 int get_numbase_len(unsigned int num, unsigned int base);
+int get_longnumbase_len(unsigned long int num, unsigned int base);
 void fill_numbase_buff(unsigned int, unsigned int, char *b, int size);
+void fill_longnumbase_buff(unsigned long int num, unsigned int, char *, int);
 #endif /* _PRINTF_H_ */
