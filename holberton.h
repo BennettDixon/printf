@@ -36,6 +36,7 @@ typedef struct flag_specifier
  * @beg_i: pointer to beginning index (where % was found)
  * @buff_len: Counter for the total amount of characters so far.
  * @flags: pointer to int array pertaining to flag's being used
+ * @mods: pointer to char array pertaining to modifiers being used (l and h)
  * @width: width pulled from format string
  * @precision: precision pulled from format string
  * @dot: boolean value 0 or 1 representing precision dot found or not
@@ -79,7 +80,6 @@ char *get_int(va_list, char *mods);
 char *get_binary(va_list, char *mods);
 char *get_unsigned(va_list, char *mods);
 char *get_octal(va_list, char *mods);
-char *get_hex_n(unsigned int);
 char *get_hex(va_list, char *mods);
 char *get_hex_upper(va_list, char *mods);
 char *get_pointer(va_list, char *mods);
@@ -92,6 +92,8 @@ char *do_hex_flag(char *str);
 char *do_hex_upper_flag(char *str);
 char *do_width(char *str, int width, int space);
 char *do_precision(char *str, int precision, char spec);
+char *get_hex_n(unsigned int);
+char *get_hex_long_n(unsigned long int);
 int ch_in_array(char c, char *ptr);
 int is_specifier(char c);
 int is_flag(char c, char prev_c);
@@ -99,10 +101,13 @@ int is_modifier(char c);
 int _isalpha(char c);
 int _isdigit(char c);
 int is_printable(char c);
+unsigned int _abs(int n);
 int _strlen(char *s);
 void _string_upper(char *str);
 char *_strcpy(char *dest, char *src);
 int fill_nonprint_buffer(int length, char *buff, char *str);
 int get_numbase_len(unsigned int num, unsigned int base);
+int get_longnumbase_len(unsigned long int num, unsigned int base);
 void fill_numbase_buff(unsigned int, unsigned int, char *b, int size);
+void fill_longnumbase_buff(unsigned long int num, unsigned int, char *, int);
 #endif /* _PRINTF_H_ */

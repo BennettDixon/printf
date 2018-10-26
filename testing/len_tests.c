@@ -30,17 +30,19 @@ int main(void)
 	printf("len: %d\n", len);
 	printf("len2: %d\n", len2);
 
+
 	len = _printf("long X with 0: %lX", 0UL);
 	len2 = printf("long X with 0: %lX", 0UL);
 	printf("len: %d\n", len);
 	printf("len2: %d\n", len2);
+	
+
+	len = _printf("long X with MAX: %lX", ULONG_MAX);
+	len2 = printf("long X with MAX: %lX", ULONG_MAX);
+	printf("len: %d\n", len);
+	printf("len2: %d\n", len2);
+
+
 
 	return (0);
-
-
-
-
-
-
-	
 }
