@@ -121,6 +121,8 @@ int print_helper(printh_t *help_s, va_list args)
 					temp = do_precision(temp,
 							help_s->precision,
 						help_s->format[help_s->f_i]);
+				if (help_s->format[help_s->f_i] == 'p')
+					temp = do_hex_flag(temp);
 				if (help_s->flags[3] && help_s->format[help_s->f_i] != 's'
 						&& help_s->format[help_s->f_i] != 'c')
 					temp = do_width(temp, help_s->width, 1);

@@ -85,14 +85,12 @@ char *get_pointer(va_list args, char *mods)
 		length++;
 	}
 
-	ret = malloc(2 + length + 1);
+	ret = malloc(length + 1);
 	if (!ret)
 		return (NULL);
-	ret[0] = '0';
-	ret[1] = 'x';
-	ret[2 + length] = '\0';
-	i = 2 + length - 1;
-	while (i > 1)
+	ret[length] = '\0';
+	i = length - 1;
+	while (i >= 0)
 	{
 		rem = addr % 16;
 		if (rem > 9)

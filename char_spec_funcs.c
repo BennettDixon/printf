@@ -28,7 +28,7 @@ char *get_char(va_list args, char *mods)
 }
 /**
  * get_string - gets a pointer to a string, null terminated
- * @args: va_list to get argument of type char 
+ * @args: va_list to get argument of type char
  * @mods: length modifiers, voided, not used with this specifier*
  *
  * Return: pointer to beginning of string
