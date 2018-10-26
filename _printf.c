@@ -145,6 +145,8 @@ int print_helper(printh_t *help_s, va_list args)
 				case ('h'):
 					help_s->mods[1] = 1;
 					break;
+				default:
+					break;
 			}
 		}
 		else

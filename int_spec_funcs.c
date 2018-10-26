@@ -1,5 +1,6 @@
 #include "holberton.h"
 #include <stdlib.h>
+#include <stdio.h>
 unsigned int _abs(int);
 /**
  * get_int - gets a character pointer to new string containing int
@@ -15,7 +16,10 @@ char *get_int(va_list args, char *mods)
 	char *ret;
 
 	if (mods[0] > 0 && mods[1] == 0) /* l byte is lit, h is not */
+	{
+		printf("pulling as long int\n");
 		num = va_arg(args, long int);
+	}
 	else if (mods[1] > 0 && mods[0] == 0) /* h byte lit, l is not */
 		num = va_arg(args, int);
 	else /* both are lit (cancels out), or no length mods are lit */
@@ -77,7 +81,10 @@ char *get_unsigned(va_list args, char *mods)
 	char *ret;
 
 	if (mods[0] > 0 && mods[1] == 0) /* l byte is lit, h is not */
+	{
+		printf("pulling as unsigned long int\n");
 		num = va_arg(args, unsigned long int);
+	}
 	else if (mods[1] > 0 && mods[0] == 0) /* h byte lit, l is not */
 		num = va_arg(args, int);
 	else /* both are lit (cancels out), or no length mods are lit */
@@ -108,7 +115,10 @@ char *get_octal(va_list args, char *mods)
 	char *ret;
 
 	if (mods[0] > 0 && mods[1] == 0) /* l byte is lit, h is not */
+	{
+		printf("octal pulling as unsigned long int\n");
 		num = va_arg(args, unsigned long int);
+	}
 	else if (mods[1] > 0 && mods[0] == 0) /* h byte lit, l is not */
 		num = va_arg(args, int);
 	else /* both are lit (cancels out), or no length mods are lit */
