@@ -16,7 +16,7 @@ char *do_precision(char *str, int prec, char spec)
 {
 	char *ret;
 	int len, i;
-	char int_array[] = {'i', 'd', 'o', 'u', 'x', 'X', 0};
+	char int_array[] = {'i', 'd', 'o', 'u', 'x', 'X', 'p', 0};
 
 	len = _strlen(str);
 	if (ch_in_array(spec, int_array))
@@ -75,9 +75,9 @@ char *do_digit_precision(char *str, int prec, int len)
 			str[0] = '\0';
 			return (str);
 		}
-		ret = do_width(str, prec, 0);
+		ret = do_width(str, prec, 1);
 	}
 	else
-		ret = do_width(str, prec, 0);
+		ret = do_width(str, prec, 1);
 	return (ret);
 }

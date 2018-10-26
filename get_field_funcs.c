@@ -1,6 +1,6 @@
 #include "holberton.h"
 #include <stdlib.h>
-
+#include <stdio.h>
 /**
  * get_width_precision - gets the width and precision for a format string
  * @help_s: pointer to our helper struct to contain variables for passing
@@ -41,38 +41,56 @@ void get_width_precision(printh_t *help_s, va_list args)
  * less than the specified minimum width.
  * @str: The string to modify.
  * @width: The minimum width the string should have.
- * @space: if 0, pad with 0's, pad with space if 1.
+ * @zero: if 1, pad with 0's, otherwise pad with space.
  *
  * Return: char pointer to the new string.
  */
 
-char *do_width(char *str, int width, int space)
+char *do_width(char *str, int width, int zero)
 {
 	int len;
-	int i, j;
+	int i, j, stop;
 	char *ret;
 	char pad;
 
+	stop = 0;
 	len = _strlen(str);
 	if (len > width)
 		return (str);
-
 	ret = malloc(width + 1);
 	if (!ret)
 		return (NULL);
-
+	if (zero)
+	{
+		pad = '0';
+		if (str[0] == '+')
+		{
+			ret[0] = '+';
+			stop = 1;
+		}
+		if (str[0] == '-')
+		{
+			ret[0] = '-';
+			stop = 1;
+		}
+		if (str[0] == '0' && str[1] == 'x')
+		{
+			ret[0] = '0';
+			ret[1] = 'x';
+			stop = 2;
+		}
+	}
+	else
+	{
+		printf("use spaces\n");
+		pad = ' ';
+	}
 	i = width;
 	j = len;
-
-	while (j >= 0)
+	while (j >= stop)
 		ret[i--] = str[j--];
 
-	if (space)
-		pad = ' ';
-	else
-		pad = '0';
-
-	while (i >= 0)
+	while (i >= stop)
 		ret[i--] = pad;
 	free(str);
 	return (ret);

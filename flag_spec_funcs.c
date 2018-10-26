@@ -67,10 +67,10 @@ char *do_octal_flag(char *str)
 	int i, length;
 	char *ret;
 
-	if (str[0] == '0')
+	length = _strlen(str);
+	if (str[0] == '0' && length == 1)
 		return (str);
 
-	length = _strlen(str);
 	i = 0;
 	ret = malloc(1 + length + 1);
 	ret[i++] = '0';
@@ -95,10 +95,10 @@ char *do_hex_flag(char *str)
 	int i, length;
 	char *ret;
 
-	if (str[0] == '0')
+	length = _strlen(str);
+	if (str[0] == '0' && length == 1)
 		return (str);
 
-	length = _strlen(str);
 	i = 0;
 	ret = malloc(2 + length + 1);
 	ret[i++] = '0';
@@ -122,9 +122,6 @@ char *do_hex_flag(char *str)
 char *do_hex_upper_flag(char *str)
 {
 	char *ret;
-
-	if (str[0] == '0')
-		return (str);
 
 	ret = do_hex_flag(str);
 	ret[1] = 'X';
