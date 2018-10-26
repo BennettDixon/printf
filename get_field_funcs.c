@@ -49,21 +49,20 @@ void get_width_precision(printh_t *help_s, va_list args)
 char *do_width(char *str, int width, int zero)
 {
 	int len;
-	int i, j;
+	int i, j, stop;
 	char *ret;
 	char pad;
 
+	stop = 0;
 	len = _strlen(str);
 	if (len > width)
 		return (str);
-
 	ret = malloc(width + 1);
 	if (!ret)
 		return (NULL);
 
 	i = width;
 	j = len;
-
 	while (j >= 0)
 		ret[i--] = str[j--];
 
@@ -71,8 +70,21 @@ char *do_width(char *str, int width, int zero)
 		pad = '0';
 	else
 		pad = ' ';
-
-	while (i >= 0)
+	if (str[0] == '-' && zero)
+	{
+		ret[i + 1] = pad;
+		ret[0] = '-';
+		stop = 1;
+	}
+	if (str[0] == '0' && str[1] == 'x' && zero)
+	{
+		ret[i + 1] = pad;
+		ret[i + 2] = pad;
+		ret[0] = '0';
+		ret[1] = 'x';
+		stop = 2;
+	}
+	while (i >= stop)
 		ret[i--] = pad;
 	free(str);
 	return (ret);
