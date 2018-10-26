@@ -1,4 +1,3 @@
-#include <stdio.h>
 /**
  * get_numbase_len - gets length of buffer needed for an unsigned int
  * @num: number to get length needed for
@@ -28,7 +27,6 @@ int get_longnumbase_len(unsigned long int num, unsigned int base)
 {
 	int len = 1; /* all numbers contain at least 1 digit */
 
-	printf("longnumbase_len got: %ld\n", num);
 	while (num > (unsigned long int)base - 1)
 	{
 		len++;
