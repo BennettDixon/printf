@@ -75,9 +75,9 @@ char *do_digit_precision(char *str, int prec, int len)
 			str[0] = '\0';
 			return (str);
 		}
-		ret = do_width(str, prec, 0);
+		ret = do_width(str, prec, 1);
 	}
 	else
-		ret = do_width(str, prec, 0);
+		ret = do_width(str, prec, 1);
 	return (ret);
 }
