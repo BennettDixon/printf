@@ -59,7 +59,8 @@ int _printf(const char *format, ...)
 				return (-1);
 			}
 		}
-		else
+		else if (!(format[help_s->f_i] == 'l' && help_s->mods[0])
+			&& !(format[help_s->f_i] == 'h' && help_s->mods[1]))
 		{
 			help_s->c[0] = format[help_s->f_i];
 			help_s->c[1] = '\0';
@@ -88,13 +89,14 @@ int _printf(const char *format, ...)
 int print_helper(printh_t *help_s, va_list args)
 {
 	char *temp;
-	int flag_index, i = 0;
+	int flag_index, mod_index, i = 0;
 
 	flag_index = is_flag(help_s->format[help_s->f_i],
 			help_s->format[help_s->f_i - 1]);
+	mod_index = is_modifier(help_s->format[help_s->f_i]);
 	if (flag_index > -1)
 		help_s->flags[flag_index] = 1;
-	else if (!is_modifier(help_s->format[help_s->f_i]))
+	else if (!mod_index)
 		(help_s->spec_c)++;
 	if (_isalpha(help_s->format[help_s->f_i])
 		|| help_s->format[help_s->f_i] == '%')
@@ -140,15 +142,15 @@ int print_helper(printh_t *help_s, va_list args)
 
 			exit_busy_reset(help_s);
 		}
-		else if (is_modifier(help_s->format[help_s->f_i]))
+		else if (mod_index)
 		{
 			switch (help_s->format[help_s->f_i])
 			{
 				case ('l'):
-					help_s->mods[0] = 1;
+					help_s->mods[0] = mod_index;
 					break;
 				case ('h'):
-					help_s->mods[1] = 1;
+					help_s->mods[1] = mod_index;
 					break;
 				default:
 					break;
@@ -156,6 +158,8 @@ int print_helper(printh_t *help_s, va_list args)
 		}
 		else
 		{
+			if (help_s->mods[0] || help_s->mods[1])
+				(help_s->spec_c)++;
 			help_s->f_i = help_s->beg_i;
 			help_s->buff[(help_s->buff_i)++] = help_s->format[help_s->f_i];
 			help_s->buff_len++;
