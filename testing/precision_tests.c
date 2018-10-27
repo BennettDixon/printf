@@ -71,7 +71,7 @@ int main()
 	}
 
 	len = _printf("%%-+010d, 1024: [%-+010d]\n", 1024);
-	len2 = printf("%%-+010d,1024: [%-+010d]\n", 1024);
+	len2 = printf("%%-+010d, 1024: [%-+010d]\n", 1024);
 	printf("len: %d\n", len);
 	printf("len2: %d\n", len2);
 	if (len != len2)
@@ -124,7 +124,7 @@ int main()
 		fflush(stdout);
 		return (1);
 	}
-	
+
 	len = _printf("%%.6x, 0: [%.6x]\n", 0);
 	len2 = printf("%%.6x, 0: [%.6x]\n", 0);
 	printf("len: %d\n", len);
@@ -135,7 +135,7 @@ int main()
 		fflush(stdout);
 		return (1);
 	}
-	
+
 	len = _printf("%%.20p: [%.20p]\n", (void *)0x7ffe637541f0);
 	len2 = printf("%%.20p: [%.20p]\n", (void *)0x7ffe637541f0);
 	printf("len: %d\n", len);
