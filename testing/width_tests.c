@@ -11,8 +11,13 @@ int main()
 	printf("len: %d\n", len);
 	printf("len2: %d\n", len2);
 
-	len = _printf("20 width on integer: [%*d %*i]\n", 20, 14, 15, 30);
-	len2 = printf("20 width on integer: [%*d %*i]\n", 20, 14, 15, 30);
+	len = _printf("20 width and no width on integers: [%*d|%i]\n", 20, 15, 30);
+	len2 = printf("20 width and no width on integers: [%*d|%i]\n", 20, 15, 30);
+	printf("len: %d\n", len);
+	printf("len2: %d\n", len2);
+
+	len = _printf("5 width then 10 width on integers: [%*d %*i]\n", 5, 20, 10, 30);
+	len2 = printf("5 width then 10 width on integers: [%*d %*i]\n", 5, 20, 10, 30);
 	printf("len: %d\n", len);
 	printf("len2: %d\n", len2);
 

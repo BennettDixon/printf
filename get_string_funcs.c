@@ -6,7 +6,7 @@
  *
  * Return: pointer to a function that takes va_list and returns char *
  */
-char *(*get_string_func(char ch))(va_list)
+char *(*get_string_func(char ch))(va_list, char *mods)
 {
 	spec_t specs[] = {
 		{ 'c', get_char },

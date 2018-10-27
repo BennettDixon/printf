@@ -1,9 +1,9 @@
 #include "holberton.h"
 #include <stdlib.h>
 int print_helper(printh_t *help_s, va_list args);
-void get_width_precision(printh_t *help_s, va_list args);
 char *perform_flag_funcs(int *flags, char *str, char spec);
 printh_t *init_help_s(const char *);
+void exit_busy_reset(printh_t *help_s);
 /**
   * _printf - Prints variatic arguments based on format string.
   * @format: String passed, may contain zero, or more directives.
@@ -13,8 +13,8 @@ printh_t *init_help_s(const char *);
 
 int _printf(const char *format, ...)
 {
-	unsigned int length;
 	int E;
+	unsigned int t_bytes;
 	va_list args;
 	printh_t *help_s;
 
@@ -27,7 +27,7 @@ int _printf(const char *format, ...)
 		va_end(args);
 		return (-1);
 	}
-	length = 0, E = 0;
+	E = 0;
 
 	while (format[help_s->f_i])
 	{
@@ -40,7 +40,8 @@ int _printf(const char *format, ...)
 				if (help_s->spec_c)
 				{
 					help_s->buff[help_s->buff_i++] = format[help_s->f_i];
-					help_s->busy = 0;
+					help_s->buff_len++;
+					exit_busy_reset(help_s);
 				}
 				else
 				{
@@ -59,7 +60,11 @@ int _printf(const char *format, ...)
 			}
 		}
 		else
-			help_s->buff[help_s->buff_i++] = format[help_s->f_i];
+		{
+			help_s->c[0] = format[help_s->f_i];
+			help_s->c[1] = '\0';
+			help_s->buff_len += copy_buff(help_s->c, help_s);
+		}
 		help_s->f_i++;
 	}
 	if (help_s->busy && format[help_s->f_i] == '\0')
@@ -68,11 +73,10 @@ int _printf(const char *format, ...)
 		free_all(help_s, args);
 		return (-1);
 	}
-	if (help_s->buff_i > BUFF_SIZE)
-		help_s->buff_i = BUFF_SIZE;
-	length = print_buff(help_s->buff, help_s->buff_i);
+	print_buff(help_s->buff, help_s->buff_i);
+	t_bytes = help_s->buff_len;
 	free_all(help_s, args);
-	return (length);
+	return (t_bytes);
 }
 /**
  * print_helper - print helper function to split up logic of _printf
@@ -86,17 +90,18 @@ int print_helper(printh_t *help_s, va_list args)
 	char *temp;
 	int flag_index, i = 0;
 
-	flag_index = is_flag(help_s->format[help_s->f_i]);
+	flag_index = is_flag(help_s->format[help_s->f_i],
+			help_s->format[help_s->f_i - 1]);
 	if (flag_index > -1)
 		help_s->flags[flag_index] = 1;
-	else
+	else if (!is_modifier(help_s->format[help_s->f_i]))
 		(help_s->spec_c)++;
 	if (_isalpha(help_s->format[help_s->f_i])
 		|| help_s->format[help_s->f_i] == '%')
 	{
 		if (is_specifier(help_s->format[help_s->f_i]))
 		{
-			temp = get_string_func(help_s->format[help_s->f_i])(args);
+			temp = get_string_func(help_s->format[help_s->f_i])(args, help_s->mods);
 			if (!temp)
 				return (0);
 			if (temp[0] == '\0' && help_s->format[help_s->f_i] == 'c')
@@ -104,25 +109,57 @@ int print_helper(printh_t *help_s, va_list args)
 				for (i = 0; i < help_s->width - 1; i++)
 					help_s->buff[help_s->buff_i++] = ' ';
 				help_s->buff[help_s->buff_i++] = '\0';
-				help_s->busy = 0;
+				if (help_s->width)
+					help_s->buff_len += help_s->width - 1;
+				help_s->buff_len++;
+				exit_busy_reset(help_s);
+				free(temp);
 				return (1);
 			}
 			else
 			{
+				if (help_s->dot)
+					temp = do_precision(temp,
+							help_s->precision,
+						help_s->format[help_s->f_i]);
+				if (help_s->format[help_s->f_i] == 'p' && temp[0] != '(')
+					temp = do_hex_flag(temp);
 				temp = perform_flag_funcs(help_s->flags, temp,
 						help_s->format[help_s->f_i]);
-				temp = do_width(temp, help_s->width, 1);
+				if (help_s->flags[3])
+					temp = do_shift(temp, help_s->width);
+				if (help_s->flags[4] && help_s->format[help_s->f_i] != 's'
+						&& help_s->format[help_s->f_i] != 'c')
+					temp = do_width(temp, help_s->width, 1);
+				else
+					temp = do_width(temp, help_s->width, 0);
 			}
 			if (!temp)
 				return (0);
-			copy_buff(temp, &(help_s->buff_i), help_s->buff, BUFF_SIZE);
-			help_s->busy = 0;
+			help_s->buff_len += copy_buff(temp, help_s);
+
+			exit_busy_reset(help_s);
+		}
+		else if (is_modifier(help_s->format[help_s->f_i]))
+		{
+			switch (help_s->format[help_s->f_i])
+			{
+				case ('l'):
+					help_s->mods[0] = 1;
+					break;
+				case ('h'):
+					help_s->mods[1] = 1;
+					break;
+				default:
+					break;
+			}
 		}
 		else
 		{
 			help_s->f_i = help_s->beg_i;
 			help_s->buff[(help_s->buff_i)++] = help_s->format[help_s->f_i];
-			help_s->busy = 0;
+			help_s->buff_len++;
+			exit_busy_reset(help_s);
 		}
 	}
 	else if (_isdigit(help_s->format[help_s->f_i]) ||
@@ -135,7 +172,8 @@ int print_helper(printh_t *help_s, va_list args)
 		{
 			help_s->f_i = help_s->beg_i;
 			help_s->buff[(help_s->buff_i)++] = help_s->format[help_s->f_i];
-			help_s->busy = 0;
+			help_s->buff_len++;
+			exit_busy_reset(help_s);
 		}
 		else
 			return (0);
@@ -155,15 +193,32 @@ printh_t *init_help_s(const char *format)
 	help_s = malloc(sizeof(*help_s));
 	if (!help_s)
 		return (NULL);
-	help_s->flags = calloc(3, sizeof(int));
+	help_s->flags = calloc(5, sizeof(int));
 	if (!help_s->flags)
 	{
+		free(help_s);
+		return (NULL);
+	}
+	help_s->mods = calloc(2, sizeof(char));
+	if (!help_s->mods)
+	{
+		free(help_s->flags);
 		free(help_s);
 		return (NULL);
 	}
 	help_s->buff = create_buff(BUFF_SIZE);
 	if (!help_s->buff)
 	{
+		free(help_s->mods);
+		free(help_s->flags);
+		free(help_s);
+		return (NULL);
+	}
+	help_s->c = create_buff(2);
+	if (!help_s->c)
+	{
+		free(help_s->buff);
+		free(help_s->mods);
 		free(help_s->flags);
 		free(help_s);
 		return (NULL);
@@ -174,43 +229,11 @@ printh_t *init_help_s(const char *format)
 	help_s->f_i = 0;
 	help_s->buff_i = 0;
 	help_s->beg_i = 0;
+	help_s->buff_len = 0;
 	help_s->width = 0;
 	help_s->precision = 0;
 	help_s->spec_c = 0;
 	return (help_s);
-}
-/**
- * get_width_precision - gets the width and precision for a format string
- * @help_s: pointer to our helper struct to contain variables for passing
- * @args: va_list of args to advance and use
- *
- * Return: always void
- */
-void get_width_precision(printh_t *help_s, va_list args)
-{
-	char c;
-	char dot;
-
-	c = help_s->format[help_s->f_i];
-	dot = help_s->dot;
-
-	if (c == '.')
-		help_s->dot = 1;
-	else if (_isdigit(c))
-	{
-		c -= '0';
-		if (!dot)
-			help_s->width = (c + (help_s->width * 10));
-		else
-			help_s->precision = (c + (help_s->precision * 10));
-	}
-	else if (c == '*')
-	{
-		if (!dot)
-			help_s->width = va_arg(args, int);
-		else
-			help_s->precision = va_arg(args, int);
-	}
 }
 /**
  * perform_flag_funcs - Perform flag functions that were encountered on the
@@ -228,12 +251,11 @@ char *perform_flag_funcs(int *flags, char *temp, char spec)
 	int i;
 	char *(*f)(char *);
 
-	for (i = 0; i < 3; i++)
+	for (i = 0; i < 5; i++)
 	{
 		if (flags[i])
 		{
 			f = get_flag_func(i, spec);
-			flags[i] = 0;
 			if (f)
 				temp = f(temp);
 			if (!temp)
@@ -241,4 +263,25 @@ char *perform_flag_funcs(int *flags, char *temp, char spec)
 		}
 	}
 	return (temp);
+}
+
+/**
+ * exit_busy_reset - Reset values of busy, width, precision, and dot to zero
+ * upon exit of busy.
+ * @help_s: Pointer to structure.
+ *
+ * Return: Void.
+ */
+
+void exit_busy_reset(printh_t *help_s)
+{
+	int i;
+
+	help_s->busy = 0;
+	help_s->width = 0;
+	help_s->precision = 0;
+	help_s->dot = 0;
+
+	for (i = 0; i < 5; i++)
+		help_s->flags[i] = 0;
 }
