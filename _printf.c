@@ -1,8 +1,8 @@
 #include "holberton.h"
 #include <stdlib.h>
 int print_helper(printh_t *help_s, va_list args);
-char *perform_flag_funcs(int *flags, char *str, char spec);
-printh_t *init_help_s(const char *);
+char *perform_sub_specs(char *temp, printh_t *help_s);
+printh_t *init_help_s(const char *, va_list args);
 void exit_busy_reset(printh_t *help_s);
 /**
   * _printf - Prints variatic arguments based on format string.
@@ -21,12 +21,9 @@ int _printf(const char *format, ...)
 	if (!format)
 		return (-1);
 	va_start(args, format);
-	help_s = init_help_s(format);
+	help_s = init_help_s(format, args);
 	if (!help_s)
-	{
-		va_end(args);
 		return (-1);
-	}
 	E = 0;
 
 	while (format[help_s->f_i])
@@ -117,23 +114,7 @@ int print_helper(printh_t *help_s, va_list args)
 				return (1);
 			}
 			else
-			{
-				if (help_s->dot)
-					temp = do_precision(temp,
-							help_s->precision,
-						help_s->format[help_s->f_i]);
-				if (help_s->format[help_s->f_i] == 'p' && temp[0] != '(')
-					temp = do_hex_flag(temp);
-				temp = perform_flag_funcs(help_s->flags, temp,
-						help_s->format[help_s->f_i]);
-				if (help_s->flags[3])
-					temp = do_shift(temp, help_s->width);
-				if (help_s->flags[4] && help_s->format[help_s->f_i] != 's'
-						&& help_s->format[help_s->f_i] != 'c')
-					temp = do_width(temp, help_s->width, 1);
-				else
-					temp = do_width(temp, help_s->width, 0);
-			}
+				temp = perform_sub_specs(temp, help_s);
 			if (!temp)
 				return (0);
 			help_s->buff_len += copy_buff(temp, help_s);
@@ -181,46 +162,98 @@ int print_helper(printh_t *help_s, va_list args)
 	return (1);
 }
 /**
+ * perform_sub_specs - Performs sub specifier formats on the specifier string.
+ * @temp: Pointer to string of the specifier.
+ * @help_s: Pointer to structure containing information on all the flags seen
+ * between the % and the specifier.
+ *
+ * Longer description: Performs precision on the string if precision was seen.
+ * Next if the specifier is a pointer and the string does not contain '(' from
+ * (nil) (for null pointers) append 0x to the string. Afterwards, ' ', '+', '0'
+ * , '0x', '0X' is appended for applicable integer values if the flags ' ', '+'
+ * ,'#' was set. Left justified is performed on the string next if '-' flag was
+ * specified with a value. If left justified is performd, width that is
+ * performed next will not occur.Lastly width, padding with either zeroes or
+ * spaces is applied if the flags was set. Width with padding for zeroes will
+ * not occur is precision was performed; if a width was specified with
+ * precision, the string will be padded with spaces.
+ *
+ * Returns: A formatted specifier string.
+ */
+char *perform_sub_specs(char *temp, printh_t *help_s)
+{
+	char current_spec;
+	int precision, width, dot_flag, shift_flag, zero_flag;
+
+	current_spec = help_s->format[help_s->f_i];
+	precision = help_s->precision;
+	width = help_s->width;
+	dot_flag = help_s->dot;
+	shift_flag = help_s->flags[3];
+	zero_flag = help_s->flags[4];
+
+	if (dot_flag)
+	{
+		temp = do_precision(temp, precision, current_spec);
+		zero_flag = 0;
+	}
+	if (current_spec == 'p' && temp[0] != '(')
+		/* append 0x to pointer if it is not (nil) */
+		temp = do_hex_flag(temp);
+	temp = perform_flag_funcs(help_s->flags, temp, current_spec);
+	if (shift_flag)
+	{
+		temp = do_shift(temp, width);
+		zero_flag = 0;
+		width = 0;
+	}
+	if (zero_flag && current_spec != 's' && current_spec != 'c')
+		temp = do_width(temp, width, 1);
+	else
+		temp = do_width(temp, width, 0);
+
+	return (temp);
+}
+/**
  * init_help_s - initializes print helper structure, creating space for it
  * @format: pointer to format specifier string to set as pointer
+ * @args: va_list pointer, will be sent to free_all to have memory freed if a
+ * malloc fails.
  *
  * Return: pointer to structure created in memory
  */
-printh_t *init_help_s(const char *format)
+printh_t *init_help_s(const char *format, va_list args)
 {
 	printh_t *help_s;
 
 	help_s = malloc(sizeof(*help_s));
 	if (!help_s)
+	{
+		va_end(args);
 		return (NULL);
+	}
 	help_s->flags = calloc(5, sizeof(int));
 	if (!help_s->flags)
 	{
-		free(help_s);
+		free_all(help_s, args);
 		return (NULL);
 	}
 	help_s->mods = calloc(2, sizeof(char));
 	if (!help_s->mods)
 	{
-		free(help_s->flags);
-		free(help_s);
+		free_all(help_s, args);
 		return (NULL);
 	}
 	help_s->buff = create_buff(BUFF_SIZE);
 	if (!help_s->buff)
 	{
-		free(help_s->mods);
-		free(help_s->flags);
-		free(help_s);
+		free_all(help_s, args);
 		return (NULL);
 	}
 	help_s->c = create_buff(2);
 	if (!help_s->c)
 	{
-		free(help_s->buff);
-		free(help_s->mods);
-		free(help_s->flags);
-		free(help_s);
+		free_all(help_s, args);
 		return (NULL);
 	}
 	help_s->format = format;

@@ -72,6 +72,7 @@ void free_all(printh_t *help_s, va_list args);
 void get_width_precision(printh_t *help_s, va_list args);
 char *(*get_string_func(char ch))(va_list, char *modifiers);
 char *(*get_flag_func(int flag_index, char spec))(char *);
+char *perform_flag_funcs(int *flags, char *str, char spec);
 char *get_char(va_list, char *mods);
 char *get_string(va_list, char *mods);
 char *get_nonprint_string(va_list, char *mods);
