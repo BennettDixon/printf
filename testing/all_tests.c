@@ -116,5 +116,73 @@ int main()
 		return (1);
 	}
 
+	len = _printf("%%.5c: [%.5c]\n", '\0');
+	len2 = printf("%%.5c: [%.5c]\n", '\0');
+	printf("len: %d\n", len);
+	printf("len2: %d\n", len2);
+	if (len != len2)
+	{
+		printf("Test X: Lengths differ.\n");
+		fflush(stdout);
+		return (1);
+	}
+
+	len = _printf("%%-5c: [%-5c]\n", '\0');
+	len2 = printf("%%-5c: [%-5c]\n", '\0');
+	printf("len: %d\n", len);
+	printf("len2: %d\n", len2);
+	if (len != len2)
+	{
+		printf("Test X: Lengths differ.\n");
+		fflush(stdout);
+		return (1);
+	}
+
+	len = _printf("%%-6.5c: [%-6.5c]\n", 'H');
+	len2 = printf("%%-6.5c: [%-6.5c]\n", 'H');
+	printf("len: %d\n", len);
+	printf("len2: %d\n", len2);
+	if (len != len2)
+	{
+		printf("Test X: Lengths differ.\n");
+		fflush(stdout);
+		return (1);
+	}
+
+
+	len = _printf("%%-.c: [%-.c]\n", 'H');
+	len2 = printf("%%-.c: [%-.c]\n", 'H');
+	printf("len: %d\n", len);
+	printf("len2: %d\n", len2);
+	if (len != len2)
+	{
+		printf("Test X: Lengths differ.\n");
+		fflush(stdout);
+		return (1);
+	}
+
+	len = _printf("%%-05c: [%-05c]\n", 'H');
+	len2 = printf("%%-05c: [%-05c]\n", 'H');
+	printf("len: %d\n", len);
+	printf("len2: %d\n", len2);
+	if (len != len2)
+	{
+		printf("Test X: Lengths differ.\n");
+		fflush(stdout);
+		return (1);
+	}
+
+
+	len = _printf("%%-010.7c: [%-10.7c]\n", 'H');
+	len2 = printf("%%-010.7c: [%-10.7c]\n", 'H');
+	printf("len: %d\n", len);
+	printf("len2: %d\n", len2);
+	if (len != len2)
+	{
+		printf("Test X: Lengths differ.\n");
+		fflush(stdout);
+		return (1);
+	}
+
 	return (0);
 }
