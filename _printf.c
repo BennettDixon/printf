@@ -122,7 +122,7 @@ int print_helper(printh_t *help_s, va_list args)
 					temp = do_precision(temp,
 							help_s->precision,
 						help_s->format[help_s->f_i]);
-				if (help_s->format[help_s->f_i] == 'p')
+				if (help_s->format[help_s->f_i] == 'p' && temp[0] != '(')
 					temp = do_hex_flag(temp);
 				temp = perform_flag_funcs(help_s->flags, temp,
 						help_s->format[help_s->f_i]);

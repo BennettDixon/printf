@@ -124,7 +124,8 @@ char *do_hex_upper_flag(char *str)
 	char *ret;
 
 	ret = do_hex_flag(str);
-	ret[1] = 'X';
+	if (ret[1] == 'x')
+		ret[1] = 'X';
 
 	return (ret);
 }
