@@ -81,42 +81,37 @@ char *get_percent(va_list args, char *mods)
 	return (str);
 }
 /**
- * get_nonprint_string - gets a pointer to a string in memory containing np's
- * @args: va_list to get string containing non printables
- * @mods: length modifiers, voided, not used with this specifier
+ * insert_null_char - Inserts a nullbyte into the buffer while applying width
+ * or left adjustment.
+ * @help_s: pointer to the structure containing width and precision values.
  *
- * Return: pointer to newly allocated string containing hex's for np's
+ * Return: void.
  */
-char *get_nonprint_string(va_list args, char *mods)
+void insert_null_char(printh_t *help_s)
 {
-	char *str, *ret;
-	int length, i;
+	int i, shift_flag, width;
 
-	(void)mods;
-	str = va_arg(args, char *);
-	length = 0;
-	i = 0;
+	shift_flag = help_s->flags[3];
+	width = help_s->width;
 
-	while (str[i])
+	if (shift_flag)
 	{
-		if (!is_printable(str[i]))
+		help_s->buff[help_s->buff_i++] = '\0';
+		help_s->buff_len++;
+		for (i = 0; i < width - 1; i++)
 		{
-			length += 4;
+			help_s->buff[help_s->buff_i++] = ' ';
+			help_s->buff_len++;
 		}
-		else
-			length++;
-		i++;
-
 	}
-	i = 0;
-	ret = malloc(length + 1);
-	if (!ret)
-		return (NULL);
-	if (!fill_nonprint_buffer(length, ret, str))
+	else
 	{
-		free(ret);
-		return (NULL);
+		for (i = 0; i < width - 1; i++)
+		{
+			help_s->buff[help_s->buff_i++] = ' ';
+			help_s->buff_len++;
+		}
+		help_s->buff[help_s->buff_i++] = '\0';
+		help_s->buff_len++;
 	}
-
-	return (ret);
 }
