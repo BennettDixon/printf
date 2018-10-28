@@ -29,7 +29,7 @@ int main(void)
 	len2 = printf("octal w/ 0:%06o\n", 0);
 	printf("len: %d\n", len);
 	printf("len2: %d\n", len2);
-	
+
 	len = _printf("06o w/ big int:%06o\n", 102498502);
 	len2 = printf("06o w/ big int:%06o\n", 102498502);
 	printf("len: %d\n", len);
@@ -40,7 +40,6 @@ int main(void)
 	printf("len: %d\n", len);
 	printf("len2: %d\n", len2);
 
-	
 	len = _printf("06d w/ neg:%06d\n", -1024);
 	len2 = printf("06d w/ neg:%06d\n", -1024);
 	printf("len: %d\n", len);

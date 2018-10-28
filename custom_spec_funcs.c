@@ -74,3 +74,70 @@ char *get_rot(va_list args, char *mods)
 	ret[length] = '\0';
 	return (ret);
 }
+/**
+ * get_nonprint_string - gets a pointer to a string in memory containing np's
+ * @args: va_list to get string containing non printables
+ * @mods: length modifiers, voided, not used with this specifier
+ *
+ * Return: pointer to newly allocated string containing hex's for np's
+ */
+char *get_nonprint_string(va_list args, char *mods)
+{
+	char *str, *ret;
+	int length, i;
+
+	(void)mods;
+	str = va_arg(args, char *);
+	length = 0;
+	i = 0;
+
+	while (str[i])
+	{
+		if (!is_printable(str[i]))
+		{
+			length += 4;
+		}
+		else
+			length++;
+		i++;
+
+	}
+	i = 0;
+	ret = malloc(length + 1);
+	if (!ret)
+		return (NULL);
+	if (!fill_nonprint_buffer(length, ret, str))
+	{
+		free(ret);
+		return (NULL);
+	}
+
+	return (ret);
+}
+
+/**
+ * get_binary - convert unsigned integer to binary representation.
+ * @args: va_list containing the unsigned integer.
+ * @mods: length modifiers, voided, not used with this specifier
+ *
+ * Return: char pointer to the binary string. NULL if malloc fails.
+ */
+
+char *get_binary(va_list args, char *mods)
+{
+	unsigned int num;
+	int length;
+	char *ret;
+
+	(void)mods;
+	num = va_arg(args, unsigned int);
+	length = get_numbase_len(num, 2);
+
+	ret = malloc(length + 1);
+	if (!ret)
+		return (NULL);
+
+	fill_numbase_buff(num, 2, ret, length);
+
+	return (ret);
+}
