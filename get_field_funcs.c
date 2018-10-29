@@ -62,7 +62,7 @@ char *do_width(char *str, int width, int zero)
 	{
 		pad = '0';
 		sign = str[0];
-		if (str[0] == '+' || str[0] == '-')
+		if (str[0] == '+' || str[0] == '-' || str[0] == ' ')
 		{
 			ret[0] = sign;
 			stop = 1;
