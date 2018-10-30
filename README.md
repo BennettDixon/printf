@@ -97,7 +97,9 @@ All together they allow you to manipulate output for various formatting techniqu
 `buffer_functions.c` | Functions used by `_printf.c` and `printf_helper_funcs.c` to create, copy, and print the buffer so only one write call is needed. | `_printf.c`, `printf_helper_funcs.c` |
 `get_string_funcs.c` | Function that gets the proper string function for a given type specifier | `_printf.c` |
 `char_checkers.c` | Functions that check characters, such as if it is a flag, specifier, alpha, printable or in an array. | `print_f.c`, `custom_spec_funcs.c`, `_strings.c`, `get_flag_funcs.c`, `get_prec_funcs.c` |
-`char_spec_funcs.c` | Character specific functions returned by `get_string_func()`. Creates memory and copies variable type into a string usable by buffer. | `get_string_funcs.c` | 
+`char_spec_funcs.c` | Character specific functions returned by `get_string_func()`. Creates memory and copies variable type into a string usable by buffer. Also deals with insertion of null byte character into buffer directly. | `get_string_funcs.c`, `printf_helper_funcs.c` | 
+`custom_spec_funcs.c` | Custom specifier functions such as reversing a string, or getting binary representation of a number. The strings are returned by `get_string_func()`. | `get_string_funcs.c` |
+`flag_spec_funcs.c` | Contain functions that append various characacters ('+', ' ', '0x', etc.) to strings of valid specifiers. | `get_flag_funcs.c`, `printf_helper_funcs.c` |
 `int_spec_funcs.c` | Integer specific functions returned by `get_string_func()`. Creates memory and copies variable type into a string, doing proper base conversion. | `_bases.c`, `get_string_funcs.c` |
 `hex_spec_funcs.c` | Hexadecimal specific functions returned by `get_string_func()`. Creates memory and copies variable type into string, doing proper base conversion for hex (16). | `_bases.c`, `get_string_funcs.c` |
 
