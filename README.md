@@ -37,7 +37,7 @@ You can do much more, by combining  specifiers like string or integer (full list
 
 ### Specifiers 🔤
 The _specifier character_ at the end is the most significant component, since it defines the type and the interpretation of its corresponding argument:
-|Specifier                |Output                        |Examples|
+|Specifier                |Output                        |Examples |
 |----------------|-------------------------------|-----------------------------|
 | `d` or `i` | Signed integer | 1024, -1024 |
 | `u` | Unsigned integer | 1024 |
@@ -50,7 +50,7 @@ The _specifier character_ at the end is the most significant component, since it
 | `c` | Character | y |
 | `r` | Reversed string of characters | dlroW olleH |
 | `R` | ROT13 Translation of string | Uryyb |
-| `S` | String with hex-ascii value replacing special chars | \x0A\x0A|
+| `S` | String with hex-ascii value replacing special chars | \x0A\x0A |
 The _format specifier_ can also contain sub-specifiers: _flags_, _width_, _.precision_ and _modifiers_ (in that order), which are optional and follow these specifications:
 ### Flags 🏳️🏴
 |Flag                |Description                        |
@@ -79,8 +79,8 @@ The _length_ sub-specifier modifies the length of the data type. This is a chart
 |Modifier/Specifier  |`d` & `i`  |`u`, `o`, `x`, `X` |`c` |`s` |`p` |
 |----------------|------|--|--|--|--|
 | `none` | int |unsigned int | int| char pointer| void pointer |
-| `h` |short int|unsigned short int | | | | |
-| `l` |long int |unsigned long int  | | | | |
+| `h` |short int|unsigned short int | | | |
+| `l` |long int |unsigned long int  | | | |
 
 All together they allow you to manipulate output for various formatting techniques. Although printf does essentially the same thing, we have replicated it to further deepen our understanding of C.
 
