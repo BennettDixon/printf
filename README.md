@@ -93,7 +93,7 @@ All together they allow you to manipulate output for various formatting techniqu
 |`holberton.h`	| Header file containing struct and public function definitions.| `*.c`
 |`_printf.c`|Main printf function file. Setups buffer and calls other functions as the format string is traversed.|`char_checkers.c`, `printf_helper_funcs.c`, `get_field_funcs.c`, `buffer_functions.c`|
 `_bases.c` | Contains generic base calculation functions. Gets size of buffer needed to hold conversion from int[base]->string, and fills the buffer with the proper conversion (seperate functions).| `int_spec_funcs.c`, `get_hex_n_funcs.c`, `custom_spec_funcs.c` | 
-`_strings.c` | Custom functions for string operations, such as strlen and strcpy. | `flag_spec_funcs.c`, `get_field_funcs.c`, `custom_spec_funcs.c`, `char_spec_funcs.c`, `get_prec_funcs.c` `hex_spec_funcs.c`,  |
+`_strings.c` | Custom functions for string operations, such as strlen and strcpy. | `flag_spec_funcs.c`, `get_field_funcs.c`, `custom_spec_funcs.c`, `char_spec_funcs.c`, `get_prec_funcs.c`, `hex_spec_funcs.c`  |
 `buffer_functions.c` | Functions used by `_printf.c` and `printf_helper_funcs.c` to create, copy, and print the buffer so only one write call is needed. | `_printf.c`, `printf_helper_funcs.c, |
 `get_string_funcs.c` | Function that gets the proper string function for a given type specifier | `_printf.c` |
 `char_checkers.c` | Functions that check characters, such as if it is a flag or specifier | `print_f.c` |
