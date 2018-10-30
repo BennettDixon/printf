@@ -37,6 +37,7 @@ You can do much more, by combining  specifiers like string or integer (full list
 
 ### Specifiers 🔤
 The _specifier character_ at the end is the most significant component, since it defines the type and the interpretation of its corresponding argument:
+
 |Specifier                |Output                        |Examples |
 |----------------|-------------------------------|-----------------------------|
 | `d` or `i` | Signed integer | 1024, -1024 |
@@ -76,6 +77,7 @@ The _format specifier_ can also contain sub-specifiers: _flags_, _width_, _.prec
 
 ### Length Modifiers 🤥
 The _length_ sub-specifier modifies the length of the data type. This is a chart showing the types used to interpret the corresponding arguments with and without _length_ specifier (if a different type is used, the proper type promotion or conversion is performed, if allowed
+
 |Modifier/Specifier  |`d` & `i`  |`u`, `o`, `x`, `X` |`c` |`s` |`p` |
 |----------------|---------|------------|-------------|-----|-------|
 | `none` | int |unsigned int | int| char pointer| void pointer |
@@ -88,11 +90,11 @@ All together they allow you to manipulate output for various formatting techniqu
 |Name                |Information                        |Relevant Files                         |
 |----------------|-------------------------------|-----------------------------|
 |`testing`|Directory containing files relevant to testing, such as main files.|`main.c`|
-|`holberton.h`	| Header file containing struct and public function definitions| `*.c`
-|`_printf.c`|Main printf function file. Calls other functions and holds buffer|`char_checkers.c`, `get_string_funcs.c`, `buffer_functions.c`|
-`_bases.c` | Contains generic base calculation functions. Gets size of buffer needed to hold conversion from int[base]->string, and fills the buffer with the proper conversion (seperate functions).| `int_spec_funcs.c`, `hex_spec_funcs.c` | 
-`_strings.c` | Custom functions for string operations, such as strlen and strcpy | `char_spec_funcs.c` |
-`buffer_functions.c` | Functions used by `_printf.c` to create, copy, and print the buffer so only one write call is needed | `_printf.c` |
+|`holberton.h`	| Header file containing struct and public function definitions.| `*.c`
+|`_printf.c`|Main printf function file. Setups buffer and calls other functions as the format string is traversed.|`char_checkers.c`, `printf_helper_funcs.c`, `get_field_funcs.c`, `buffer_functions.c`|
+`_bases.c` | Contains generic base calculation functions. Gets size of buffer needed to hold conversion from int[base]->string, and fills the buffer with the proper conversion (seperate functions).| `int_spec_funcs.c`, `get_hex_n_funcs.c`, `custom_spec_funcs.c` | 
+`_strings.c` | Custom functions for string operations, such as strlen and strcpy. | `flag_spec_funcs.c`, `get_field_funcs.c`, `custom_spec_funcs.c`, `char_spec_funcs.c`, `get_prec_funcs.c` `hex_spec_funcs.c`,  |
+`buffer_functions.c` | Functions used by `_printf.c` and `printf_helper_funcs.c` to create, copy, and print the buffer so only one write call is needed. | `_printf.c`, `printf_helper_funcs.c, |
 `get_string_funcs.c` | Function that gets the proper string function for a given type specifier | `_printf.c` |
 `char_checkers.c` | Functions that check characters, such as if it is a flag or specifier | `print_f.c` |
 `char_spec_funcs.c` | Character specific functions returned by `get_string_func()`. Creates memory and copies variable type into a string usable by buffer. | `get_string_funcs.c` | 
