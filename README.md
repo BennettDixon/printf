@@ -77,10 +77,10 @@ The _format specifier_ can also contain sub-specifiers: _flags_, _width_, _.prec
 ### Length Modifiers 🤥
 The _length_ sub-specifier modifies the length of the data type. This is a chart showing the types used to interpret the corresponding arguments with and without _length_ specifier (if a different type is used, the proper type promotion or conversion is performed, if allowed
 |Modifier/Specifier  |`d` & `i`  |`u`, `o`, `x`, `X` |`c` |`s` |`p` |
-|----------------|------|--|--|--|--|
+|----------------|---------|------------|-------------|-----|-------|
 | `none` | int |unsigned int | int| char pointer| void pointer |
-| `h` |short int|unsigned short int | | | |
-| `l` |long int |unsigned long int  | | | |
+| `h` |short int|unsigned short int |     |     |              |
+| `l` |long int |unsigned long int  |     |     |              |
 
 All together they allow you to manipulate output for various formatting techniques. Although printf does essentially the same thing, we have replicated it to further deepen our understanding of C.
 
